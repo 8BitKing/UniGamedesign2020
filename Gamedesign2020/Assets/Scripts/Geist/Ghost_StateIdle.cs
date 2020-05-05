@@ -8,9 +8,9 @@ public class Ghost_StateIdle : IState
     private Animator animator;
     private Vector2 movement;
 
-    public Ghost_StateIdle(GhostController owner, Animator animator){
+    public Ghost_StateIdle(GhostController owner){
         this.owner = owner;
-        this.animator = animator;
+        this.animator = owner.animator;
     }
 
     public void stateInit()
@@ -33,7 +33,7 @@ public class Ghost_StateIdle : IState
         this.movement.Normalize();
 
         if (this.movement.magnitude > 0) {
-            owner.stateMachine.ChangeState(new Ghost_StateWalking(this.owner, this.owner.animator, this.owner.rb, this.owner.movementSpeed));
+            owner.stateMachine.ChangeState(new Ghost_StateWalking(this.owner));
         }
     }
 }

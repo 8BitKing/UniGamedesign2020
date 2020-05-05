@@ -226,8 +226,8 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: hSpeed
     m_Mirror: 0
-  m_BlendParameter: hSpeed
-  m_BlendParameterY: vSpeed
+  m_BlendParameter: hDir
+  m_BlendParameterY: vDir
   m_MinThreshold: 1.59
   m_MaxThreshold: 2.522093
   m_UseAutomaticThresholds: 0
@@ -347,18 +347,6 @@ AnimatorController:
   m_Name: Ghost
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: hSpeed
-    m_Type: 1
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 0}
-  - m_Name: vSpeed
-    m_Type: 1
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 0}
   - m_Name: vDir
     m_Type: 1
     m_DefaultFloat: 0
