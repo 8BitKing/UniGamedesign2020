@@ -8,8 +8,8 @@ public class GhostController : MonoBehaviour
     public StateMachine stateMachine = new StateMachine();
 
     public float movementSpeed = 1f;
-    public float acceleration = 0.1f;
-
+    public float acceleration = 1f;
+    public Vector2 movement;
 
     public Rigidbody2D rb;
     public Animator animator;
@@ -38,5 +38,8 @@ public class GhostController : MonoBehaviour
     void FixedUpdate()
     {
         this.stateMachine.runStateFixedUpdate();
+
+        //Move Ghost
+        this.rb.MovePosition(this.rb.position + this.movement * this.movementSpeed * Time.fixedDeltaTime);
     }
 }

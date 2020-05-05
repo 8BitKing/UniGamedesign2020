@@ -11,8 +11,8 @@ public class Ghost_StateWalking : IState
     private float movementSpeed;
     private float acceleration;
 
-    Vector2 movement;
-    Vector2 direction;
+    private Vector2 movement;
+    private Vector2 direction;
 
     public Ghost_StateWalking(GhostController owner) {
         this.owner = owner;
@@ -20,6 +20,7 @@ public class Ghost_StateWalking : IState
         this.rigidbody = owner.rb;
         this.movementSpeed = owner.movementSpeed;
         this.acceleration = owner.acceleration;
+        this.movement = owner.movement;
     }
 
     public void stateInit()
@@ -38,20 +39,38 @@ public class Ghost_StateWalking : IState
         //Get Input Axes
         this.direction.x = Input.GetAxisRaw("Horizontal");
         this.direction.y = Input.GetAxisRaw("Vertical");
+        this.direction.Normalize();
 
-        this.movement += this.direction;
+        //acceleration logik
+        this.movement += this.direction * this.acceleration * 50 * Time.deltaTime;
+        if (this.movement.magnitude > 1) {
+            this.movement.Normalize();
+        }
+
+        //Abbremsen für extra mehr crisp movement
+        if (this.direction.x == 0) 
+        {
+            this.movement.x *= .97f;
+        }
+        if (this.direction.y == 0)
+        {
+            this.movement.y *= .97f;
+        }
 
         //Controll Animator
         if (this.movement.magnitude > 0)
         {
-            this.animator.SetFloat("hDir", this.direction.x);
-            this.animator.SetFloat("vDir", this.direction.y);
+            this.animator.SetFloat("hDir", this.movement.x);
+            this.animator.SetFloat("vDir", this.movement.y);
         }
+
+        //Übergebe Movement Vector
+        owner.movement = this.movement;
 
         //--Breakout
 
         //To Idle State
-        if (this.movement.magnitude == 0)
+        if (this.direction.magnitude == 0)
         {
             owner.stateMachine.ChangeState(new Ghost_StateIdle(owner));
         }
@@ -59,8 +78,7 @@ public class Ghost_StateWalking : IState
 
     public void stateFixedUpdtate()
     {
-        //Move Ghost
-        this.rigidbody.MovePosition(this.rigidbody.position + this.movement * this.movementSpeed * Time.fixedDeltaTime);
+       
     }
 
 }

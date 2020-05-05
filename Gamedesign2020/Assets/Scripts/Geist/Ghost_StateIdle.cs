@@ -7,10 +7,12 @@ public class Ghost_StateIdle : IState
     private GhostController owner;
     private Animator animator;
     private Vector2 movement;
+    private Vector2 direction;
 
     public Ghost_StateIdle(GhostController owner){
         this.owner = owner;
         this.animator = owner.animator;
+        this.movement = owner.movement;
     }
 
     public void stateInit()
@@ -28,11 +30,18 @@ public class Ghost_StateIdle : IState
 
     public void stateUpdate()
     {
-        this.movement.x = Input.GetAxisRaw("Horizontal");
-        this.movement.y = Input.GetAxisRaw("Vertical");
-        this.movement.Normalize();
+        this.direction.x = Input.GetAxisRaw("Horizontal");
+        this.direction.y = Input.GetAxisRaw("Vertical");
+        this.direction.Normalize();
 
-        if (this.movement.magnitude > 0) {
+        //Abbremsen
+        this.movement.x *= .97f;
+        this.movement.y *= .97f;
+
+        //Übergebe MOvement Vector
+        owner.movement = this.movement;
+
+        if (this.direction.magnitude > 0) {
             owner.stateMachine.ChangeState(new Ghost_StateWalking(this.owner));
         }
     }
