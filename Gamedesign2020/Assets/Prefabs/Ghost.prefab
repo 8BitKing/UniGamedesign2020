@@ -137,5 +137,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 1
+  acceleration: 1
+  dashSpeed: 4
+  dashTime: 0.15
+  lastDash: -1
+  dashCooldown: 0.5
+  movement: {x: 0, y: 0}
   rb: {fileID: 8873121195973197166}
   animator: {fileID: 4828487769300365064}

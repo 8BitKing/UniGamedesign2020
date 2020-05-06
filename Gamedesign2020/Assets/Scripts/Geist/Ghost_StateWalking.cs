@@ -42,7 +42,7 @@ public class Ghost_StateWalking : IState
         this.direction.Normalize();
 
         //acceleration logik
-        this.movement += this.direction * this.acceleration * 50 * Time.deltaTime;
+        this.movement += this.direction * this.acceleration * 10 * Time.deltaTime;
         if (this.movement.magnitude > 1) {
             this.movement.Normalize();
         }
@@ -65,14 +65,15 @@ public class Ghost_StateWalking : IState
         }
 
         //Übergebe Movement Vector
-        owner.movement = this.movement;
+        owner.movement = this.movement * owner.movementSpeed;
 
         //--Breakout
+        owner.BreakoutDash();
 
         //To Idle State
         if (this.direction.magnitude == 0)
         {
-            owner.stateMachine.ChangeState(new Ghost_StateIdle(owner));
+            owner.BreakoutIdle();
         }
     }
 

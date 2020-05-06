@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 public class Ghost_StateIdle : IState
@@ -8,6 +9,7 @@ public class Ghost_StateIdle : IState
     private Animator animator;
     private Vector2 movement;
     private Vector2 direction;
+   
 
     public Ghost_StateIdle(GhostController owner){
         this.owner = owner;
@@ -17,6 +19,7 @@ public class Ghost_StateIdle : IState
 
     public void stateInit()
     {
+        
         this.animator.Play("IdleState", -1, 0);
     }
 
@@ -39,7 +42,7 @@ public class Ghost_StateIdle : IState
         this.movement.y *= .97f;
 
         //Übergebe MOvement Vector
-        owner.movement = this.movement;
+        owner.movement = this.movement * owner.movementSpeed;
 
         if (this.direction.magnitude > 0) {
             owner.stateMachine.ChangeState(new Ghost_StateWalking(this.owner));

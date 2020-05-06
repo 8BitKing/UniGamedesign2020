@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
@@ -9,6 +10,11 @@ public class GhostController : MonoBehaviour
 
     public float movementSpeed = 1f;
     public float acceleration = 1f;
+    public float dashSpeed = 4f;
+    public float dashTime = 0.15f;
+    public float lastDash = -1;
+    public float dashCooldown = 0.5f;
+
     public Vector2 movement;
 
     public Rigidbody2D rb;
@@ -40,6 +46,28 @@ public class GhostController : MonoBehaviour
         this.stateMachine.runStateFixedUpdate();
 
         //Move Ghost
-        this.rb.MovePosition(this.rb.position + this.movement * this.movementSpeed * Time.fixedDeltaTime);
+        this.rb.MovePosition(this.rb.position + this.movement  * Time.fixedDeltaTime);
+    }
+
+    //--Breakout Functions
+
+    public Boolean BreakoutDash()
+    {
+        if (Time.time-lastDash >= dashCooldown)
+        {
+            print(Time.time - lastDash);
+            if (Input.GetAxisRaw("Dash") == 1)
+            {
+                this.stateMachine.ChangeState(new Ghost_StateDash(this));
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Boolean BreakoutIdle()
+    {
+        stateMachine.ChangeState(new Ghost_StateIdle(this));
+        return true;
     }
 }
