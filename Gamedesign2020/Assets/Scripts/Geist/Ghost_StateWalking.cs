@@ -23,15 +23,25 @@ public class Ghost_StateWalking : IState
         this.movement = owner.movement;
     }
 
+    public void stateExit()
+    {
+    }
+
+    public void stateFixedUpdtate()
+    {
+    }
+
     public void stateInit()
     {
         this.animator.Play("WalkState", -1, 0);
     }
 
-
-    public void stateExit()
+    public void stateOnTriggerEnter(Collider2D collision)
     {
+    }
 
+    public void stateOnTriggerExit(Collider2D collision)
+    {
     }
 
     public void stateUpdate()
@@ -76,10 +86,4 @@ public class Ghost_StateWalking : IState
             owner.BreakoutIdle();
         }
     }
-
-    public void stateFixedUpdtate()
-    {
-       
-    }
-
 }

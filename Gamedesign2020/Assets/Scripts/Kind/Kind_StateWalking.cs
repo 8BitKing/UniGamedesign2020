@@ -65,4 +65,12 @@ public class Kind_StateWalking : IState
     {
         
     }
+
+    public void stateOnTriggerEnter(Collider2D collision)
+    {
+    }
+
+    public void stateOnTriggerExit(Collider2D collision)
+    {
+    }
 }

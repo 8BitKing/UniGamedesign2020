@@ -38,4 +38,19 @@ public class StateMachine
             this.currentState.stateFixedUpdtate();
         }
     }
+
+    public void stateTriggerEnter(Collider2D collision) {
+        if (this.currentState != null)
+        {
+            this.currentState.stateOnTriggerEnter(collision);
+        }
+    }
+
+    public void stateTriggerExit(Collider2D collision)
+    {
+        if (this.currentState != null)
+        {
+            this.currentState.stateOnTriggerExit(collision);
+        }
+    }
 }

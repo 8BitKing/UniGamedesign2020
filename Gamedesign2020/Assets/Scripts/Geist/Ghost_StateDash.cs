@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -11,7 +12,10 @@ public class Ghost_StateDash : IState
     private GhostController owner;
     private float startTime;
 
-    Vector2 movement;
+    private Vector2 oldPos;
+    private Vector2 movement;
+
+    private bool inWall = false;
 
     public Ghost_StateDash(GhostController owner) 
     {
@@ -22,8 +26,10 @@ public class Ghost_StateDash : IState
 
     public void stateInit()
     {
-        startTime = Time.time;
+        this.oldPos = owner.transform.position;
+        this.startTime = Time.time;
         this.animator.Play("WalkState", -1, 0);
+        this.owner.hitbox.enabled = false;
     }
 
 
@@ -38,22 +44,49 @@ public class Ghost_StateDash : IState
         
         if (Time.time - startTime >= owner.dashTime)
         {
-            owner.BreakoutIdle();
+            if (inWall == false) {
+                owner.BreakoutIdle();
+            }
+            else
+            {
+                owner.stateMachine.ChangeState(new Ghost_StateMoveToPoint(owner, oldPos));
+            }
+            
         }
     }
-
-    public void stateFixedUpdtate()
-    {
-    }
-
 
     public void stateExit()
     {
         this.owner.lastDash = Time.time;
         this.movement.Normalize();
         this.owner.movement = this.movement;
-        //MonoBehaviour.print(Time.time - startTime);
+        this.owner.hitbox.enabled = true;
     }
 
+    public void stateOnTriggerEnter(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "wallCollision") { 
+            this.inWall = true;
+            MonoBehaviour.print("in Wall");
+        }
+        if (collision.gameObject.tag == "possesable")
+        {
+            owner.stateMachine.ChangeState(new Ghost_StatePosses(owner, collision.gameObject));
+        }
+    }
+
+
+    public void stateOnTriggerExit(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "wallCollision")
+        {
+            this.inWall = false;
+            MonoBehaviour.print("false");
+        }
+    }
+
+    public void stateFixedUpdtate()
+    {
+    }
 
 }

@@ -17,17 +17,24 @@ public class Ghost_StateIdle : IState
         this.movement = owner.movement;
     }
 
-    public void stateInit()
-    {
-        
-        this.animator.Play("IdleState", -1, 0);
-    }
-
     public void stateExit()
     {
     }
 
     public void stateFixedUpdtate()
+    {
+    }
+
+    public void stateInit()
+    {
+        this.animator.Play("IdleState", -1, 0);
+    }
+
+    public void stateOnTriggerEnter(Collider2D collision)
+    {
+    }
+
+    public void stateOnTriggerExit(Collider2D collision)
     {
     }
 
