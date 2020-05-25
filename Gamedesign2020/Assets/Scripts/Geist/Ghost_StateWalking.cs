@@ -33,7 +33,14 @@ public class Ghost_StateWalking : IState
 
     public void stateInit()
     {
-        this.animator.Play("WalkState", -1, 0);
+        if (owner.good_form)
+        {
+            this.animator.Play("WalkState", -1, 0);
+        }
+        else
+        {
+            this.animator.Play("WalkStateEvil", -1, 0);
+        }
     }
 
     public void stateOnTriggerEnter(Collider2D collision)
@@ -84,6 +91,19 @@ public class Ghost_StateWalking : IState
         if (this.direction.magnitude == 0)
         {
             owner.BreakoutIdle();
+        }
+
+        //Switch Form
+        if (owner.good_form != owner.SwitchForm())
+        {
+            if (owner.good_form)
+            {
+                this.animator.Play("WalkState", -1, 0);
+            }
+            else
+            {
+                this.animator.Play("WalkStateEvil", -1, 0);
+            }
         }
     }
 }

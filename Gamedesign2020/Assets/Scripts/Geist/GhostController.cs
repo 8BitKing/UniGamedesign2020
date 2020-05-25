@@ -6,23 +6,33 @@ using UnityEngine;
 
 public class GhostController : MonoBehaviour
 {
-    public StateMachine stateMachine = new StateMachine();
 
-    public GameObject Sprite;
+    [Header("Form")]
+    public bool good_form = true;
+    [Header("Physics")]
     public float movementSpeed = 1f;
     public float acceleration = 1f;
     public float dashSpeed = 4f;
     public float dashTime = 0.15f;
+    [NonSerialized]
     public float lastDash = -1;
+    [NonSerialized]
+    public float lastSwitch = -1;
     public float dashCooldown = 0.5f;
+    public float switchCooldown = 0.5f;
+    [Space(10)]
+    
+    [Header("Components/Game Objects")]
+    public GameObject Sprite;
     public BoxCollider2D hitbox;
 
+    [NonSerialized]
     public Vector2 movement;
 
     public Rigidbody2D rb;
     [NonSerialized]
     public Animator animator;
-
+    public StateMachine stateMachine = new StateMachine();
 
     private Vector2 direction;
 
@@ -62,9 +72,21 @@ public class GhostController : MonoBehaviour
         this.stateMachine.stateTriggerExit(collision);
     }
 
-    public Boolean BreakoutDash()
+    public Boolean SwitchForm()
     {
-        if (Time.time-lastDash >= dashCooldown)
+        if (Time.time - this.lastSwitch >= this.switchCooldown)
+        {
+            if (Input.GetButtonDown("Switch"))
+            {
+                this.good_form = !this.good_form;
+            }
+        }
+        return this.good_form;
+    }
+
+    public bool BreakoutDash()
+    {
+        if (good_form && Time.time- this.lastDash >= this.dashCooldown)
         {
             if (Input.GetButtonDown("Dash"))
             {
@@ -75,7 +97,7 @@ public class GhostController : MonoBehaviour
         return false;
     }
 
-    public Boolean BreakoutIdle()
+    public bool BreakoutIdle()
     {
         stateMachine.ChangeState(new Ghost_StateIdle(this));
         return true;
