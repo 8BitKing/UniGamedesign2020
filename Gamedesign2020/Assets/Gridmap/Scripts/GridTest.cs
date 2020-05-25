@@ -4,8 +4,9 @@ using UnityEngine;
 using CodeMonkey.Utils;
 using System.Dynamic;
 using System.Runtime.InteropServices;
+using System.Security.AccessControl;
 
-public class GridTest 
+public class GridTest
 {
 
     private int width;
@@ -15,6 +16,7 @@ public class GridTest
     private Vector3 originPos;
     private Vector3 movefrom;
     private bool movefromUsed = false;
+    
     //debug kram
     private TextMesh[,] debugTextArray;
 
@@ -33,15 +35,22 @@ public class GridTest
             for (int y = 0; y < gridArray.GetLength(1); y++) {
 
                 debugTextArray[x,y]= UtilsClass.CreateWorldText(gridArray[x, y].ToString(), null, GetWorldPos(x, y)+ new Vector3(cellSize,cellSize)*0.5f, 10,Color.white,TextAnchor.MiddleCenter);
+                Debug.DrawLine(GetWorldPos(x, y), GetWorldPos(x, y + 1), Color.white, 100f);
+                Debug.DrawLine(GetWorldPos(x, y), GetWorldPos(x + 1, y), Color.white, 100f);
 
-                Debug.DrawLine(GetWorldPos(x, y), GetWorldPos(x, y + 1),Color.white, 100f);
-                Debug.DrawLine(GetWorldPos(x, y), GetWorldPos(x+1, y ),Color.white, 100f);
             }
-           
+            Debug.DrawLine(GetWorldPos(0, height), GetWorldPos(width, height), Color.white, 100f);
+            Debug.DrawLine(GetWorldPos(width, 0), GetWorldPos(width, height), Color.white, 100f);
+
         }
-            Debug.DrawLine(GetWorldPos(0, height), GetWorldPos(width, height),Color.white,100f);
-            Debug.DrawLine(GetWorldPos(width, 0), GetWorldPos(width, height),Color.white, 100f);
+           
         
+    }
+    public GameObject[] CollectTaggedObject(string Tag)
+    {
+        GameObject[] objects;
+        objects= GameObject.FindGameObjectsWithTag(Tag);
+        return objects;
     }
 
     //erhält grid koordinate und verschiebt sie in Weltkoordinaten
@@ -51,7 +60,7 @@ public class GridTest
     }
 
     //erhält Weltkoordinate und rechnet um in Gridkoordinate
-    private void GetGridCoord(Vector3 worldPos,out int x,out int y)
+    public void GetGridCoord(Vector3 worldPos,out int x,out int y)
     {
         x = Mathf.FloorToInt((worldPos - originPos).x / cellSize);
         y = Mathf.FloorToInt((worldPos - originPos).y / cellSize);
@@ -175,5 +184,18 @@ public class GridTest
         }
         
     
+    }
+    public void ResetMoveables()
+    {
+        for(int x = 0; x < gridArray.GetLength(0); x++)
+        {
+            for(int y = 0; y < gridArray.GetLength(1); y++)
+            {
+                if (GetValue(x, y) == -1)
+                {
+                    SetValue(x, y, 1);
+                }
+            }
+        }
     }
 }

@@ -69,7 +69,7 @@ public class Ghost_StateDash : IState
             this.inWall = true;
             MonoBehaviour.print("in Wall");
         }
-        if (collision.gameObject.tag == "possesable")
+        if (collision.gameObject.tag == "MOVEABLE")
         {
             owner.stateMachine.ChangeState(new Ghost_StatePosses(owner, collision.gameObject));
         }
