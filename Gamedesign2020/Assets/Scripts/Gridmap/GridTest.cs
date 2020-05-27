@@ -5,12 +5,15 @@ using CodeMonkey.Utils;
 using System.Dynamic;
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
+using System;
+using UnityEngine.Tilemaps;
 
 public class GridTest
 {
-
-    private int width;
-    private int height;
+    [NonSerialized]
+    public int width;
+    [NonSerialized]
+    public int height;
     private float cellSize;
     private int[,] gridArray;
     private Vector3 originPos;
@@ -21,18 +24,20 @@ public class GridTest
     private TextMesh[,] debugTextArray;
 
     //Grid Constructor mit Debug Informationen
-  public GridTest(int width, int height, float cellSize, Vector3 originPos)
+  public GridTest(int width, int height, Tilemap tilemap)
     {
         this.width = width;
         this.height = height;
-        this.cellSize = cellSize;
-        this.originPos = originPos;
+        this.cellSize = tilemap.cellSize.x * tilemap.transform.localScale.x;
+        this.originPos = (Vector3)tilemap.origin*cellSize;
         gridArray = new int[width, height];
         debugTextArray = new TextMesh[width, height];
 
         for (int x = 0; x < gridArray.GetLength(0); x++)
         {
             for (int y = 0; y < gridArray.GetLength(1); y++) {
+                //standart 1
+                gridArray[x, y] = 1;
 
                 debugTextArray[x,y]= UtilsClass.CreateWorldText(gridArray[x, y].ToString(), null, GetWorldPos(x, y)+ new Vector3(cellSize,cellSize)*0.5f, 10,Color.white,TextAnchor.MiddleCenter);
                 Debug.DrawLine(GetWorldPos(x, y), GetWorldPos(x, y + 1), Color.white, 100f);
