@@ -13,7 +13,7 @@ public class GridDebug : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        grid = new GridTest(50, 50,1.5f,new Vector3(-5,-5));
+        grid = new GridTest(50, 50,1f,new Vector3(-5,-5));
         //if (moveables == null)
         //{
         //    moveables = grid.CollectTaggedObject("MOVEABLE");
@@ -53,9 +53,12 @@ public class GridDebug : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        //zur Laufzeit GameObjects mit gesetztem Tag sammeln
         moveables = grid.CollectTaggedObject("MOVEABLE");
         lights = grid.CollectTaggedObject("LIGHTSOURCE");
+        //alte GridWerte der Obstacles resetten
         grid.ResetMoveables();
+        //für alle gefundenen Objekte collider abfragen und im grid entsprechend Werte setzen
         for (int i = 0; i < moveables.Length; i++)
         {
             BoxCollider2D collider = moveables[i].GetComponent<BoxCollider2D>();
@@ -82,7 +85,20 @@ public class GridDebug : MonoBehaviour
 
             }
         }
-        grid.Decay(2); 
+        //alte Lichtwerte im Grid decayen lassen
+        grid.Decay(2);
+        for (int i = 0; i < lights.Length; i++)
+        {
+            BoxCollider2D collider = lights[i].GetComponent<BoxCollider2D>();
+            if (collider != null)
+            {
+
+
+                Vector3 centerBoundingBox = collider.bounds.center;
+                grid.GenLight(centerBoundingBox, 3, 50);
+
+            }
+        }
     }
 
 }
