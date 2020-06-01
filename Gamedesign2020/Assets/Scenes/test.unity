@@ -227,15 +227,20 @@ PrefabInstance:
       propertyPath: m_TagString
       value: LIGHTSOURCE
       objectReference: {fileID: 0}
+    - target: {fileID: 7537396050257909427, guid: f5306f6e003bd2446b8dd950989c23bb,
+        type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7537396050257909429, guid: f5306f6e003bd2446b8dd950989c23bb,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 12.4829
+      value: -7.17
       objectReference: {fileID: 0}
     - target: {fileID: 7537396050257909429, guid: f5306f6e003bd2446b8dd950989c23bb,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.0068
+      value: -2.77
       objectReference: {fileID: 0}
     - target: {fileID: 7537396050257909429, guid: f5306f6e003bd2446b8dd950989c23bb,
         type: 3}

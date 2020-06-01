@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using System;
 using UnityEngine.Tilemaps;
+using UnityEngine.EventSystems;
 
 public class GridTest
 {
@@ -23,6 +24,14 @@ public class GridTest
     //debug kram
     private TextMesh[,] debugTextArray;
 
+    public event EventHandler<OnGridValueChangedEventArgs> OnGridValueChanged;
+    public class OnGridValueChangedEventArgs : EventArgs
+    {
+        public int x;
+        public int y;
+    }
+
+
     //Grid Constructor mit Debug Informationen
   public GridTest(int width, int height, Tilemap tilemap)
     {
@@ -31,7 +40,7 @@ public class GridTest
         this.cellSize = tilemap.cellSize.x * tilemap.transform.localScale.x;
         this.originPos = (Vector3)tilemap.origin*cellSize;
         gridArray = new int[width, height];
-        debugTextArray = new TextMesh[width, height];
+        //debugTextArray = new TextMesh[width, height];
 
         for (int x = 0; x < gridArray.GetLength(0); x++)
         {
@@ -39,7 +48,7 @@ public class GridTest
                 //standart 1
                 gridArray[x, y] = 1;
 
-                debugTextArray[x,y]= UtilsClass.CreateWorldText(gridArray[x, y].ToString(), null, GetWorldPos(x, y)+ new Vector3(cellSize,cellSize)*0.5f, 10,Color.white,TextAnchor.MiddleCenter);
+                //debugTextArray[x,y]= UtilsClass.CreateWorldText(gridArray[x, y].ToString(), null, GetWorldPos(x, y)+ new Vector3(cellSize,cellSize)*0.5f, 10,Color.white,TextAnchor.MiddleCenter);
                 Debug.DrawLine(GetWorldPos(x, y), GetWorldPos(x, y + 1), Color.white, 100f);
                 Debug.DrawLine(GetWorldPos(x, y), GetWorldPos(x + 1, y), Color.white, 100f);
 
@@ -47,6 +56,9 @@ public class GridTest
             Debug.DrawLine(GetWorldPos(0, height), GetWorldPos(width, height), Color.white, 100f);
             Debug.DrawLine(GetWorldPos(width, 0), GetWorldPos(width, height), Color.white, 100f);
 
+            //OnGridValueChanged += (object sender, OnGridValueChangedEventArgs eventArgs) => {
+            //    debugTextArray[eventArgs.x, eventArgs.y].text = gridArray[eventArgs.x, eventArgs.y].ToString();
+            //};
         }
            
         
@@ -78,7 +90,7 @@ public class GridTest
         if (x >= 0 && y >= 0 && x < width && y < height)
         {
             gridArray[x, y] = value;
-            debugTextArray[x, y].text = gridArray[x, y].ToString();
+            if (OnGridValueChanged != null) OnGridValueChanged(this, new OnGridValueChangedEventArgs { x = x, y = y });
         }
     }
     public void SetValue(Vector3 worldPos, int value)
@@ -113,9 +125,9 @@ public class GridTest
         if (x >= 0 && y >= 0 && x < width && y < height)
         {
             Vector2 center = new Vector2(x, y);
-            for (int i = 0; i < gridArray.GetLength(0); i++)
+            for (int i = x-(radius+1); i < Mathf.Min(x + (radius+1), width); i++)
             {
-                for (int j = 0; j < gridArray.GetLength(1); j++)
+                for (int j = y - (radius+1); j < Mathf.Min(y + (radius+1), height); j++)
                 {
                     Vector2 curr = new Vector2(i, j);
                     Vector2 dist = curr - center;
@@ -202,5 +214,61 @@ public class GridTest
                 }
             }
         }
+    }
+
+    public void GetPathingGoal(Vector3 currPos,int visionRange)
+    {
+        int x, y;
+        GetGridCoord(currPos, out x, out y);
+        if (x >= 0 && y >= 0 && x < width && y < height)
+        {
+            GetPathingGoal(x, y, visionRange);
+        }
+    }
+    public void GetPathingGoal(int x, int y, int visionRange)
+    {
+        
+        Vector3 center = GetWorldPos(x, y);
+        Vector3 maxLight = new Vector3(x,y,1);
+        
+        center.x += 0.5f * cellSize;
+        center.y += 0.5f * cellSize;
+        Vector2 centerGrid = new Vector2(x, y);
+        for (int i = x - (visionRange + 1); i < Mathf.Min(x + (visionRange + 1), width); i++)
+        {
+            for (int j = y - (visionRange + 1); j < Mathf.Min(y + (visionRange + 1), height); j++)
+            {
+                Vector3 curr = GetWorldPos(i, j);
+                curr.x += 0.5f * cellSize;
+                curr.y += 0.5f * cellSize;
+                Vector3 dist = curr - center;
+                Vector2 currGrid = new Vector2(i, j);
+                Vector2 distGrid = currGrid - centerGrid;
+                if (distGrid.magnitude <= visionRange&& GetValue(i, j)>maxLight.z)
+                {
+                    
+                    RaycastHit2D hit=Physics2D.Raycast(new Vector2(center.x,center.y), new Vector2 (dist.x,dist.y));
+
+
+                    Debug.Log(hit.distance+"vs"+dist.magnitude);
+
+                    if (hit.distance > dist.magnitude||hit.distance==0)
+                    {
+
+                        maxLight = new Vector3(i, j, GetValue(i, j));
+                    }
+                            
+                    
+                    
+                    
+                }
+
+            }
+        }
+        Vector3 dest= GetWorldPos((int)maxLight.x,(int)maxLight.y);
+        dest.x += 0.5f * cellSize;
+        dest.y += 0.5f * cellSize;
+        Debug.DrawRay(center,dest-center , Color.green, 1f, false);
+        //Debug.Log("Pathing Goal liegt bei " + maxLight);
     }
 }
