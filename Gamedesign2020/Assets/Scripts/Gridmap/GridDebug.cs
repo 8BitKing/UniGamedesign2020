@@ -13,6 +13,9 @@ public class GridDebug : MonoBehaviour
     public float cellSize = .32f;
     public Tilemap tilemap;
     public Tile CollisionTile;
+    public GameObject Collidier;
+    public GameObject Trigger;
+    public GameObject TriggerGrid;
 
 
     
@@ -27,6 +30,7 @@ public class GridDebug : MonoBehaviour
         
         grid = new GridTest(50, 50, tilemap);
         PlaceTilemap();
+        PlaceColliders();
         //if (moveables == null)
         //{
         //    moveables = grid.CollectTaggedObject("MOVEABLE");
@@ -80,6 +84,24 @@ public class GridDebug : MonoBehaviour
         PlaceLights();
 
 
+    }
+
+    public void PlaceColliders()
+    {
+        for (int x = 0; x <= grid.width; x++)
+        {
+            for (int y = 0; y <= grid.height; y++)
+            {
+                if (grid.GetValue(x,y) == 0)
+                {
+                    var _collider = Instantiate(Collidier,grid.GetOriginPosition() + new Vector3(x*grid.GetCellSize() + grid.GetCellSize()/2, y * grid.GetCellSize() + grid.GetCellSize() / 2, 0) , Quaternion.identity);
+                    _collider.transform.parent = grid.GetTilemapParent();
+
+                    var _trigger = Instantiate(Trigger, grid.GetOriginPosition() + new Vector3(x * grid.GetCellSize() + grid.GetCellSize() / 2, y * grid.GetCellSize() + grid.GetCellSize() / 2, 0), Quaternion.identity);
+                    _trigger.transform.parent = TriggerGrid.transform;
+                }
+            }
+        }
     }
 
     public void PlaceTilemap()

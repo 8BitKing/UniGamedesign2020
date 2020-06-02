@@ -12,6 +12,7 @@ public class Ghost_StateDash : IState
     private GhostController owner;
     private float startTime;
 
+
     private Vector2 oldPos;
     private Vector2 movement;
 
@@ -65,9 +66,8 @@ public class Ghost_StateDash : IState
 
     public void stateOnTriggerEnter(Collider2D collision)
     {
-        if (collision.gameObject.tag == "wallCollision") { 
+        if (collision.gameObject.tag == "SOLIDWALL") { 
             this.inWall = true;
-            MonoBehaviour.print("in Wall");
         }
         if (collision.gameObject.tag == "MOVEABLE")
         {
@@ -78,7 +78,7 @@ public class Ghost_StateDash : IState
 
     public void stateOnTriggerExit(Collider2D collision)
     {
-        if (collision.gameObject.tag == "wallCollision")
+        if (collision.gameObject.tag == "SOLIDWALL")
         {
             this.inWall = false;
             MonoBehaviour.print("false");

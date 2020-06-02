@@ -20,6 +20,7 @@ public class GridTest
     private Vector3 originPos;
     private Vector3 movefrom;
     private bool movefromUsed = false;
+    private Transform parent;
     
     //debug kram
     private TextMesh[,] debugTextArray;
@@ -35,6 +36,7 @@ public class GridTest
     //Grid Constructor mit Debug Informationen
   public GridTest(int width, int height, Tilemap tilemap)
     {
+        this.parent = tilemap.gameObject.transform.parent;
         this.width = width;
         this.height = height;
         this.cellSize = tilemap.cellSize.x * tilemap.transform.localScale.x;
@@ -270,5 +272,20 @@ public class GridTest
         dest.y += 0.5f * cellSize;
         Debug.DrawRay(center,dest-center , Color.green, 1f, false);
         //Debug.Log("Pathing Goal liegt bei " + maxLight);
+    }
+
+    public float GetCellSize()
+    {
+        return this.cellSize;
+    }
+
+    public Vector3 GetOriginPosition()
+    {
+        return this.originPos;
+    }
+
+    public Transform GetTilemapParent()
+    {
+        return this.parent;
     }
 }
