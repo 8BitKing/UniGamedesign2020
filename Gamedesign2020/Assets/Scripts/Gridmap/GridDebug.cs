@@ -14,10 +14,17 @@ public class GridDebug : MonoBehaviour
     public Tilemap tilemap;
     public Tile CollisionTile;
 
+
+    
+    private void Grid_OnGridValueChanged(object sender, GridTest.OnGridValueChangedEventArgs e)
+    {
+        
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-
+        
         grid = new GridTest(50, 50, tilemap);
         PlaceTilemap();
         //if (moveables == null)
@@ -28,16 +35,17 @@ public class GridDebug : MonoBehaviour
         //{
         //    lights = grid.CollectTaggedObject("LIGHTSOURCE");
         //}
+        grid.OnGridValueChanged += Grid_OnGridValueChanged;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    grid.GenLight(UtilsClass.GetMouseWorldPosition(), 5,500);
-        //}
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            grid.GetPathingGoal(UtilsClass.GetMouseWorldPosition(), 5);
+        }
         if (Input.GetMouseButtonDown(1))
         {
             grid.SetValue(UtilsClass.GetMouseWorldPosition(),1);
@@ -76,8 +84,7 @@ public class GridDebug : MonoBehaviour
 
     public void PlaceTilemap()
     {
-        print(tilemap.cellBounds.position);
-        print(tilemap.GetTile(new Vector3Int(0, 0, 0)) == CollisionTile);
+        
         for (int x = 0; x <= grid.width; x++)
         {
             if (x > tilemap.cellBounds.size.x) {
@@ -89,7 +96,7 @@ public class GridDebug : MonoBehaviour
                 {
                     continue;
                 }
-                print(tilemap.origin);
+                
 
                 if (tilemap.GetTile(new Vector3Int(x + (tilemap.origin.x), y + (tilemap.origin.y), 0)) == CollisionTile)
                 {
