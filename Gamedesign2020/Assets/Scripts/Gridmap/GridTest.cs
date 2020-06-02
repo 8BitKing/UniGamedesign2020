@@ -246,7 +246,7 @@ public class GridTest
                 Vector3 dist = curr - center;
                 Vector2 currGrid = new Vector2(i, j);
                 Vector2 distGrid = currGrid - centerGrid;
-                if (distGrid.magnitude <= visionRange&& GetValue(i, j)>maxLight.z)
+                if ((distGrid.magnitude <= visionRange&& GetValue(i, j)>maxLight.z)||(distGrid.magnitude <= visionRange && GetValue(i, j)==maxLight.z&&distGrid.magnitude>(new Vector2(maxLight.x,maxLight.y)-centerGrid).magnitude))
                 {
                     
                     RaycastHit2D hit=Physics2D.Raycast(new Vector2(center.x,center.y), new Vector2 (dist.x,dist.y));
