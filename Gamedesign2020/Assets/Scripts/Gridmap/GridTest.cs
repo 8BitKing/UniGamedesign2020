@@ -21,6 +21,7 @@ public class GridTest
     private Vector3 movefrom;
     private bool movefromUsed = false;
     private Transform parent;
+    public bool debug = false;
     
     //debug kram
     private TextMesh[,] debugTextArray;
@@ -42,7 +43,9 @@ public class GridTest
         this.cellSize = tilemap.cellSize.x * tilemap.transform.localScale.x;
         this.originPos = (Vector3)tilemap.origin*cellSize;
         gridArray = new int[width, height];
-        //debugTextArray = new TextMesh[width, height];
+
+        debugTextArray = new TextMesh[width, height];
+        
 
         for (int x = 0; x < gridArray.GetLength(0); x++)
         {
@@ -50,7 +53,7 @@ public class GridTest
                 //standart 1
                 gridArray[x, y] = 1;
 
-                //debugTextArray[x,y]= UtilsClass.CreateWorldText(gridArray[x, y].ToString(), null, GetWorldPos(x, y)+ new Vector3(cellSize,cellSize)*0.5f, 10,Color.white,TextAnchor.MiddleCenter);
+                if(debug){debugTextArray[x,y]= UtilsClass.CreateWorldText(gridArray[x, y].ToString(), null, GetWorldPos(x, y)+ new Vector3(cellSize,cellSize)*0.5f, 10,Color.white,TextAnchor.MiddleCenter);}
                 Debug.DrawLine(GetWorldPos(x, y), GetWorldPos(x, y + 1), Color.white, 100f);
                 Debug.DrawLine(GetWorldPos(x, y), GetWorldPos(x + 1, y), Color.white, 100f);
 
@@ -58,9 +61,13 @@ public class GridTest
             Debug.DrawLine(GetWorldPos(0, height), GetWorldPos(width, height), Color.white, 100f);
             Debug.DrawLine(GetWorldPos(width, 0), GetWorldPos(width, height), Color.white, 100f);
 
-            //OnGridValueChanged += (object sender, OnGridValueChangedEventArgs eventArgs) => {
-            //    debugTextArray[eventArgs.x, eventArgs.y].text = gridArray[eventArgs.x, eventArgs.y].ToString();
-            //};
+            if (debug)
+            {
+                OnGridValueChanged += (object sender, OnGridValueChangedEventArgs eventArgs) =>
+                {
+                    debugTextArray[eventArgs.x, eventArgs.y].text = gridArray[eventArgs.x, eventArgs.y].ToString();
+                };
+            }
         }
            
         
@@ -218,23 +225,23 @@ public class GridTest
         }
     }
 
-    public void GetPathingGoal(Vector3 currPos,int visionRange)
+    public Vector3 GetPathingGoal(Vector3 currPos,int visionRange)
     {
         int x, y;
         GetGridCoord(currPos, out x, out y);
         if (x >= 0 && y >= 0 && x < width && y < height)
         {
-            GetPathingGoal(x, y, visionRange);
+            return GetPathingGoal(x, y, visionRange,currPos);
         }
+        else return new Vector3(currPos.x,currPos.y,GetValue(currPos));
     }
-    public void GetPathingGoal(int x, int y, int visionRange)
+    public Vector3 GetPathingGoal(int x, int y, int visionRange, Vector3 centerWorld)
     {
-        
-        Vector3 center = GetWorldPos(x, y);
+
+        Vector3 center = centerWorld;
         Vector3 maxLight = new Vector3(x,y,1);
         
-        center.x += 0.5f * cellSize;
-        center.y += 0.5f * cellSize;
+        
         Vector2 centerGrid = new Vector2(x, y);
         for (int i = x - (visionRange + 1); i < Mathf.Min(x + (visionRange + 1), width); i++)
         {
@@ -246,13 +253,13 @@ public class GridTest
                 Vector3 dist = curr - center;
                 Vector2 currGrid = new Vector2(i, j);
                 Vector2 distGrid = currGrid - centerGrid;
-                if ((distGrid.magnitude <= visionRange&& GetValue(i, j)>maxLight.z)||(distGrid.magnitude <= visionRange && GetValue(i, j)==maxLight.z&&maxLight.z>1&&distGrid.magnitude>(new Vector2(maxLight.x,maxLight.y)-centerGrid).magnitude))
+                if ((distGrid.magnitude <= visionRange&& GetValue(i, j)>maxLight.z)||(distGrid.magnitude <= visionRange && GetValue(i, j)==maxLight.z&&maxLight.z>1&&distGrid.magnitude<(new Vector2(maxLight.x,maxLight.y)-centerGrid).magnitude))
                 {
                     
                     RaycastHit2D hit=Physics2D.Raycast(new Vector2(center.x,center.y), new Vector2 (dist.x,dist.y));
 
 
-                    Debug.Log(hit.distance+"vs"+dist.magnitude);
+                   // Debug.Log(hit.distance+"vs"+dist.magnitude);
 
                     if (hit.distance > dist.magnitude||hit.distance==0)
                     {
@@ -270,8 +277,11 @@ public class GridTest
         Vector3 dest= GetWorldPos((int)maxLight.x,(int)maxLight.y);
         dest.x += 0.5f * cellSize;
         dest.y += 0.5f * cellSize;
+        dest.z = maxLight.z;
         Debug.DrawRay(center,dest-center , Color.green, 1f, false);
-        //Debug.Log("Pathing Goal liegt bei " + maxLight);
+        
+      
+        return dest;
     }
 
     public float GetCellSize()
