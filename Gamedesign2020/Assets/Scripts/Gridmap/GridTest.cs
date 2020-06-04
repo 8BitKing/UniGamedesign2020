@@ -278,7 +278,7 @@ public class GridTest
         dest.x += 0.5f * cellSize;
         dest.y += 0.5f * cellSize;
         dest.z = maxLight.z;
-        Debug.DrawRay(center,dest-center , Color.green, 1f, false);
+       // Debug.DrawRay(center,dest-center , Color.green, 1f, false);
         
       
         return dest;
