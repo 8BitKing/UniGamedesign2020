@@ -53,9 +53,6 @@ public class GridDebug : MonoBehaviour
         if (Input.GetMouseButtonDown(1))
         {
             grid.SetValue(UtilsClass.GetMouseWorldPosition(),1);
-            
-
-
         }
         //if (Input.GetKeyDown("space"))
         //{
