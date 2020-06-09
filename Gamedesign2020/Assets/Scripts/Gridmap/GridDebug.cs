@@ -16,6 +16,7 @@ public class GridDebug : MonoBehaviour
     public GameObject Collidier;
     public GameObject Trigger;
     public GameObject TriggerGrid;
+    
 
 
     
@@ -29,6 +30,7 @@ public class GridDebug : MonoBehaviour
     {
         
         grid = new GridTest(50, 50, tilemap);
+        
         PlaceTilemap();
         PlaceColliders();
         //if (moveables == null)
@@ -170,5 +172,9 @@ public class GridDebug : MonoBehaviour
 
             }
         }
+    }
+    public Vector3 GetGoal(Vector3 pos,int range)
+    {
+        return grid.GetPathingGoal(pos, range);
     }
 }
