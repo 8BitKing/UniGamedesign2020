@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -52,5 +53,10 @@ public class StateMachine
         {
             this.currentState.stateOnTriggerExit(collision);
         }
+    }
+
+    public Type getCurrentState()
+    {
+        return currentState.GetType();
     }
 }

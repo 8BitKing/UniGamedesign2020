@@ -34,6 +34,7 @@ public class KindControllerRaycast : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //print(this.stateMachine.getCurrentState());
         this.stateMachine.runStateUpdate();
        
     }
