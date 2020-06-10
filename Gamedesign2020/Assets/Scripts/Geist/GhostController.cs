@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class GhostController : MonoBehaviour
 {
-
+    public String currentState = "Bob";
     [Header("Form")]
     public bool good_form = true;
     [Header("Physics")]
@@ -25,6 +25,8 @@ public class GhostController : MonoBehaviour
     [Header("Components/Game Objects")]
     public GameObject Sprite;
     public BoxCollider2D hitbox;
+
+
 
     [NonSerialized]
     public Vector2 movement;
@@ -46,6 +48,7 @@ public class GhostController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        this.currentState = this.stateMachine.getCurrentState().Name;
         this.stateMachine.runStateUpdate();
     }
 

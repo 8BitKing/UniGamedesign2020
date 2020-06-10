@@ -31,6 +31,7 @@ public class KindStateCry : IState
 
     public void stateInit()
     {
+        animator.SetFloat("hSpeed", 0);
         this.animator.Play("CryState", -1, 0);
         
 
