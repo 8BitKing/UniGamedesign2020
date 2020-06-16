@@ -4225,7 +4225,7 @@ Tilemap:
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 0}
   m_Origin: {x: -14, y: -13, z: 0}
   m_Size: {x: 24, y: 25, z: 1}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
@@ -4456,12 +4456,12 @@ PrefabInstance:
     - target: {fileID: 8955713383759705001, guid: 0b55d1f94a70afa4fae68f90347e0444,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.6186135
+      value: -0.592
       objectReference: {fileID: 0}
     - target: {fileID: 8955713383759705001, guid: 0b55d1f94a70afa4fae68f90347e0444,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.50115216
+      value: 0.508
       objectReference: {fileID: 0}
     - target: {fileID: 8955713383759705001, guid: 0b55d1f94a70afa4fae68f90347e0444,
         type: 3}
@@ -4513,6 +4513,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wandlampe (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 8955713383759705003, guid: 0b55d1f94a70afa4fae68f90347e0444,
+        type: 3}
+      propertyPath: m_TagString
+      value: MOVEABLE
+      objectReference: {fileID: 0}
     - target: {fileID: 8955713385069470118, guid: 0b55d1f94a70afa4fae68f90347e0444,
         type: 3}
       propertyPath: m_Color.r
@@ -4528,6 +4533,26 @@ PrefabInstance:
       propertyPath: m_Color.b
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8955713385069470118, guid: 0b55d1f94a70afa4fae68f90347e0444,
+        type: 3}
+      propertyPath: m_PointLightInnerRadius
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 8955713385069470118, guid: 0b55d1f94a70afa4fae68f90347e0444,
+        type: 3}
+      propertyPath: m_Intensity
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8955713385069470118, guid: 0b55d1f94a70afa4fae68f90347e0444,
+        type: 3}
+      propertyPath: m_PointLightOuterRadius
+      value: 0.47
+      objectReference: {fileID: 0}
+    - target: {fileID: 8955713385069470120, guid: 0b55d1f94a70afa4fae68f90347e0444,
+        type: 3}
+      propertyPath: m_TagString
+      value: LIGHTSOURCE
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b55d1f94a70afa4fae68f90347e0444, type: 3}
 --- !u!1001 &1279177564
@@ -4540,12 +4565,12 @@ PrefabInstance:
     - target: {fileID: 8955713383759705001, guid: 0b55d1f94a70afa4fae68f90347e0444,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.954
+      value: 1.669
       objectReference: {fileID: 0}
     - target: {fileID: 8955713383759705001, guid: 0b55d1f94a70afa4fae68f90347e0444,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.458
+      value: -1.011
       objectReference: {fileID: 0}
     - target: {fileID: 8955713383759705001, guid: 0b55d1f94a70afa4fae68f90347e0444,
         type: 3}
@@ -4597,6 +4622,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wandlampe (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8955713383759705003, guid: 0b55d1f94a70afa4fae68f90347e0444,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 8955713385069470118, guid: 0b55d1f94a70afa4fae68f90347e0444,
         type: 3}
       propertyPath: m_Color.r
@@ -4611,6 +4641,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Color.b
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8955713385069470118, guid: 0b55d1f94a70afa4fae68f90347e0444,
+        type: 3}
+      propertyPath: m_PointLightInnerRadius
+      value: 0.36
+      objectReference: {fileID: 0}
+    - target: {fileID: 8955713385069470118, guid: 0b55d1f94a70afa4fae68f90347e0444,
+        type: 3}
+      propertyPath: m_Intensity
+      value: 2.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8955713385069470118, guid: 0b55d1f94a70afa4fae68f90347e0444,
+        type: 3}
+      propertyPath: m_PointLightOuterRadius
+      value: 1.18
+      objectReference: {fileID: 0}
+    - target: {fileID: 8955713385069470120, guid: 0b55d1f94a70afa4fae68f90347e0444,
+        type: 3}
+      propertyPath: m_TagString
+      value: LIGHTSOURCE
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b55d1f94a70afa4fae68f90347e0444, type: 3}
@@ -4639,12 +4689,12 @@ PrefabInstance:
     - target: {fileID: 1551151435672069976, guid: 2b0e5091ce8c9104cb4a69e6273158fe,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.8372284
+      value: -0.696
       objectReference: {fileID: 0}
     - target: {fileID: 1551151435672069976, guid: 2b0e5091ce8c9104cb4a69e6273158fe,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.26562035
+      value: 2.251
       objectReference: {fileID: 0}
     - target: {fileID: 1551151435672069976, guid: 2b0e5091ce8c9104cb4a69e6273158fe,
         type: 3}
@@ -98419,12 +98469,12 @@ PrefabInstance:
     - target: {fileID: 4565092968488353562, guid: 4861b14b90838d64f8f326ec81dc21aa,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.456
+      value: -1.101
       objectReference: {fileID: 0}
     - target: {fileID: 4565092968488353562, guid: 4861b14b90838d64f8f326ec81dc21aa,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.084
+      value: 2.128
       objectReference: {fileID: 0}
     - target: {fileID: 4565092968488353562, guid: 4861b14b90838d64f8f326ec81dc21aa,
         type: 3}
@@ -98488,12 +98538,12 @@ PrefabInstance:
     - target: {fileID: 8955713383759705001, guid: 0b55d1f94a70afa4fae68f90347e0444,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.014
+      value: 0.806
       objectReference: {fileID: 0}
     - target: {fileID: 8955713383759705001, guid: 0b55d1f94a70afa4fae68f90347e0444,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.447
+      value: 2.2
       objectReference: {fileID: 0}
     - target: {fileID: 8955713383759705001, guid: 0b55d1f94a70afa4fae68f90347e0444,
         type: 3}
@@ -98545,6 +98595,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wandlampe
       objectReference: {fileID: 0}
+    - target: {fileID: 8955713383759705003, guid: 0b55d1f94a70afa4fae68f90347e0444,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 8955713385069470118, guid: 0b55d1f94a70afa4fae68f90347e0444,
         type: 3}
       propertyPath: m_Color.r
@@ -98559,6 +98614,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Color.b
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8955713385069470118, guid: 0b55d1f94a70afa4fae68f90347e0444,
+        type: 3}
+      propertyPath: m_Intensity
+      value: 1.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 8955713385069470118, guid: 0b55d1f94a70afa4fae68f90347e0444,
+        type: 3}
+      propertyPath: m_PointLightOuterRadius
+      value: 1.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 8955713385069470118, guid: 0b55d1f94a70afa4fae68f90347e0444,
+        type: 3}
+      propertyPath: m_PointLightInnerRadius
+      value: 0.34
+      objectReference: {fileID: 0}
+    - target: {fileID: 8955713385069470120, guid: 0b55d1f94a70afa4fae68f90347e0444,
+        type: 3}
+      propertyPath: m_TagString
+      value: LIGHTSOURCE
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b55d1f94a70afa4fae68f90347e0444, type: 3}

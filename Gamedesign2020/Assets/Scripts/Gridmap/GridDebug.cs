@@ -4,6 +4,7 @@ using UnityEngine;
 using CodeMonkey.Utils;
 using UnityEditor;
 using UnityEngine.Tilemaps;
+using UnityEngine.Experimental.Rendering.Universal;
 
 public class GridDebug : MonoBehaviour
 {
@@ -72,7 +73,7 @@ public class GridDebug : MonoBehaviour
     {
         //zur Laufzeit GameObjects mit gesetztem Tag sammeln
         moveables = grid.CollectTaggedObject("MOVEABLE");
-        lights = grid.CollectTaggedObject("LIGHTSOURCE");
+        lights = GameObject.FindGameObjectsWithTag("LIGHTSOURCE");
         //alte GridWerte der Obstacles resetten
         grid.ResetMoveables();
         //für alle gefundenen Objekte collider abfragen und im grid entsprechend Werte setzen
@@ -162,15 +163,20 @@ public class GridDebug : MonoBehaviour
     {
         for (int i = 0; i < lights.Length; i++)
         {
-            BoxCollider2D collider = lights[i].GetComponent<BoxCollider2D>();
-            if (collider != null)
+
+            UnityEngine.Experimental.Rendering.Universal.Light2D light =lights[i].GetComponent<UnityEngine.Experimental.Rendering.Universal.Light2D>();
+            if (light != null)
             {
 
 
-                Vector3 centerBoundingBox = collider.bounds.center;
-                grid.GenLight(centerBoundingBox, 3, 50);
+                Vector3 centerLight = light.transform.position;
+                int brightness = (int)(light.intensity * 50);
+                int radius = (int)(light.pointLightOuterRadius / 0.32f);
+
+                grid.GenLight(centerLight, radius, brightness);
 
             }
+
         }
     }
     public Vector3 GetGoal(Vector3 pos,int range)
