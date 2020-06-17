@@ -56,7 +56,7 @@ public class Kind_StateWalkingRaycast : IState
         //MonoBehaviour.print("left");
         goal2D = new Vector2(goal.x, goal.y);
         float minspeed = 0.8f;
-        float rundeDuHure = 0.01f;
+        float rundeDuHure = 0.001f;
         Vector3 centerBoundingBox = owner.gameObject.GetComponent<BoxCollider2D>().bounds.center;
         direction = new Vector2(goal.x, goal.y) - new Vector2(centerBoundingBox.x, centerBoundingBox.y);
         direction.Normalize();
