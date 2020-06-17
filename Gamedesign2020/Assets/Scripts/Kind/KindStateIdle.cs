@@ -56,7 +56,6 @@ public class KindStateIdle : IState
         Vector3 centerBoundingBox = owner.gameObject.GetComponent<BoxCollider2D>().bounds.center;
         goal = gridObject.GetGoal(centerBoundingBox, this.visionRange);
 
-
         direction = new Vector2(goal.x, goal.y) - new Vector2(centerBoundingBox.x, centerBoundingBox.y);
        
         if (direction.magnitude > 0.3)
