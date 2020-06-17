@@ -48,3 +48,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Collision Tiles
+    uniqueID: 978163929
+    locked: 0

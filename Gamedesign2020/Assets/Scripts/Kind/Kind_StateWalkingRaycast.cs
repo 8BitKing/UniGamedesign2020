@@ -13,11 +13,6 @@ public class Kind_StateWalkingRaycast : IState
     private KindControllerRaycast owner;
     private Animator animator;
     private Rigidbody2D rigidbody;
-    
-
-    
-
-    
 
     private float speed;
     private Vector2 movement;
@@ -26,6 +21,7 @@ public class Kind_StateWalkingRaycast : IState
     private Vector2 goal2D;
     private Transform transform;
     private GridDebug gridObject;
+    private int visionRange;
     
 
     public Kind_StateWalkingRaycast(KindControllerRaycast owner)
@@ -37,8 +33,9 @@ public class Kind_StateWalkingRaycast : IState
         this.movement = owner.movement;
         this.transform = owner.transform;
         this.gridObject = owner.gridObject;
-        
-        
+        this.visionRange = owner.visionRange;
+
+
     }
     public void stateInit()
     {
@@ -55,8 +52,8 @@ public class Kind_StateWalkingRaycast : IState
 
     public void stateUpdate()
     {
-        MonoBehaviour.print("reached");
-       // MonoBehaviour.print("left");
+        //MonoBehaviour.print("reached");
+        //MonoBehaviour.print("left");
         goal2D = new Vector2(goal.x, goal.y);
         float minspeed = 0.8f;
         float rundeDuHure = 0.01f;
@@ -115,7 +112,7 @@ public class Kind_StateWalkingRaycast : IState
         animator.SetFloat("speed", direction.magnitude);
 
         owner.movement = this.movement;
-        goal = gridObject.GetGoal(centerBoundingBox, 5) ;
+        goal = gridObject.GetGoal(centerBoundingBox, this.visionRange) ;
     }
 
 

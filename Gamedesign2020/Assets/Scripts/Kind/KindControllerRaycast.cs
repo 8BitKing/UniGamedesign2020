@@ -12,7 +12,7 @@ public class KindControllerRaycast : MonoBehaviour
 
     public GameObject Sprite;
     public GridDebug gridObject;
-
+    public int visionRange = 3;
 
     public Rigidbody2D rb;
     public Animator animator;

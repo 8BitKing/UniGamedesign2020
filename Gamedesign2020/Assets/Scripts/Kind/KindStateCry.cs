@@ -10,12 +10,15 @@ public class KindStateCry : IState
     private Vector2 direction;
     private GridDebug gridObject;
     private Vector3 goal;
+    private int visionRange;
+
     public KindStateCry(KindControllerRaycast owner)
     {
         this.owner = owner;
         this.animator = owner.animator;
         this.movement = owner.movement;
         this.gridObject = owner.gridObject;
+        this.visionRange = owner.visionRange;
 
 
     }
@@ -53,7 +56,7 @@ public class KindStateCry : IState
         movement = new Vector2(0, 0);
 
         Vector3 centerBoundingBox = owner.gameObject.GetComponent<BoxCollider2D>().bounds.center;
-        goal = gridObject.GetGoal(centerBoundingBox, 5);
+        goal = gridObject.GetGoal(centerBoundingBox, this.visionRange);
 
 
         direction = new Vector2(goal.x, goal.y) - new Vector2(centerBoundingBox.x, centerBoundingBox.y);
