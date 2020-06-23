@@ -128,7 +128,7 @@ public class GridTest
     }
 
     //Methode um an Position (x,y) in Grid Koords Lichtwerte im radius "radius" und in max-höhe vom Wert "brightness" im zentrum zu setzen
-   public void GenLight(int x, int y,int radius,int brightness)
+   public void GenLight(int x, int y,int radius,int brightness,int prio)
     {
         float lightFactor;
         if (x >= 0 && y >= 0 && x < width && y < height)
@@ -143,9 +143,9 @@ public class GridTest
                     lightFactor = (brightness *(1/(dist.magnitude+1)));
                     if (dist.magnitude <= radius)
                     {
-                        if (GetValue(i,j) < Mathf.FloorToInt(lightFactor)&&GetValue(i,j)>0)
+                        if (GetValue(i,j) < Mathf.FloorToInt(lightFactor + (prio * 100)) &&GetValue(i,j)>0)
                         {
-                            SetValue(i, j, Mathf.FloorToInt(lightFactor));
+                            SetValue(i, j, Mathf.FloorToInt(lightFactor)+(prio*100));
                         }
                     }
 
@@ -155,11 +155,11 @@ public class GridTest
     }
 
     //umrechnung von welt in grid koord zur platzierung der lichtwerte
-    public void GenLight(Vector3 worldPos, int radius, int brightness)
+    public void GenLight(Vector3 worldPos, int radius, int brightness,int prio)
     {
         int x, y;
         GetGridCoord(worldPos, out x, out y);
-        GenLight(x, y, radius, brightness);
+        GenLight(x, y, radius, brightness,prio);
     }
     public void Decay(float rate)
     {
@@ -253,7 +253,7 @@ public class GridTest
                 Vector3 dist = curr - center;
                 Vector2 currGrid = new Vector2(i, j);
                 Vector2 distGrid = currGrid - centerGrid;
-                if ((distGrid.magnitude <= visionRange&& GetValue(i, j)>maxLight.z)||(distGrid.magnitude <= visionRange && GetValue(i, j)==maxLight.z&&maxLight.z>1&&distGrid.magnitude<(new Vector2(maxLight.x,maxLight.y)-centerGrid).magnitude))
+                if ((distGrid.magnitude <= visionRange&& GetValue(i, j)>maxLight.z)||(distGrid.magnitude <= visionRange && GetValue(i, j)==maxLight.z&&maxLight.z>1&&distGrid.magnitude>(new Vector2(maxLight.x,maxLight.y)-centerGrid).magnitude))
                 {
                     
                     RaycastHit2D hit=Physics2D.Raycast(new Vector2(center.x,center.y), new Vector2 (dist.x,dist.y));
