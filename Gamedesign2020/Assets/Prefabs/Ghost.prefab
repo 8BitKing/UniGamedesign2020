@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1190573102532269934}
   - component: {fileID: 6152150627589590161}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Point Light 2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86,7 +86,7 @@ GameObject:
   - component: {fileID: -7042277348921459714}
   - component: {fileID: 5684876529155514062}
   - component: {fileID: 3440688163015703640}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Ghost
   m_TagString: SOLIDWALL
   m_Icon: {fileID: 0}
@@ -193,6 +193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b085aa84f416a945a7f2dfc27214954, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentState: Bob
   good_form: 1
   movementSpeed: 1
   acceleration: 1
@@ -267,7 +268,7 @@ GameObject:
   - component: {fileID: 2390885956576524083}
   - component: {fileID: 34826757094167714}
   - component: {fileID: 1333698098239414988}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Ghost_Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -379,7 +380,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2236332181034305170}
   - component: {fileID: 209079414373614634}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Ghost_Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}

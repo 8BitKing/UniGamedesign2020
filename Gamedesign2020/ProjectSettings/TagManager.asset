@@ -51,3 +51,6 @@ TagManager:
   - name: Collision Tiles
     uniqueID: 978163929
     locked: 0
+  - name: Above Layer
+    uniqueID: 3331442575
+    locked: 0
