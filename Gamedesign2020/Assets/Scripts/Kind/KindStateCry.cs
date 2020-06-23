@@ -36,7 +36,8 @@ public class KindStateCry : IState
     {
         animator.SetFloat("hSpeed", 0);
         this.animator.Play("CryState", -1, 0);
-        
+        this.owner.rb.bodyType = RigidbodyType2D.Kinematic;
+
 
     }
 
