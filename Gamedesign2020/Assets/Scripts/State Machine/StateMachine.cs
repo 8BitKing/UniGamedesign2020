@@ -59,4 +59,8 @@ public class StateMachine
     {
         return currentState.GetType();
     }
+    public IState getCurrentStateComponent()
+    {
+        return currentState;
+    }
 }

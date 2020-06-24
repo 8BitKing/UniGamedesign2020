@@ -9,6 +9,8 @@ public class DoorController : MonoBehaviour
     public StateMachine stateMachine = new StateMachine();
     public bool open = true;
     public Collider2D collision;
+    public PowerTrigger powerTrigger;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,5 +29,21 @@ public class DoorController : MonoBehaviour
     void Update()
     {
         this.stateMachine.runStateUpdate();
+
+        if (powerTrigger.active)
+        {
+            print(this.stateMachine.getCurrentState());
+            if (this.stateMachine.getCurrentStateComponent() is Door_StateOpen)
+            {
+                this.stateMachine.ChangeState(new Door_StateClosed(this));
+            }
+            else
+            {
+                this.stateMachine.ChangeState(new Door_StateOpen(this));
+            }
+
+            powerTrigger.active = false;
+        }
+
     }
 }

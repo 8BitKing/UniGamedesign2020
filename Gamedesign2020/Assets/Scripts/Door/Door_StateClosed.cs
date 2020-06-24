@@ -25,6 +25,7 @@ public class Door_StateClosed : IState
     {
         this.animator.Play("DoorClosed", -1, 0);
         this.collision.isTrigger = false;
+        this.collision.enabled = true;
     }
 
     public void stateOnTriggerEnter(Collider2D collision)

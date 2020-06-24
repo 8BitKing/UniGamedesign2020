@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 391582910195890313}
   - component: {fileID: -8051985255415620297}
   - component: {fileID: 1770037146730416656}
+  - component: {fileID: 3714752060456906931}
   m_Layer: 0
   m_Name: DoorVertical
   m_TagString: Untagged
@@ -144,3 +145,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   open: 1
   collision: {fileID: 391582910195890313}
+  powerTrigger: {fileID: 3714752060456906931}
+--- !u!114 &3714752060456906931
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8145595851662695166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98c4b202e085d8d4a8a7e1fab7650ac3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  active: 0
+  Controller: {fileID: 1770037146730416656}

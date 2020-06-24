@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using PathCreation.Examples;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditorInternal;
 using UnityEngine;
@@ -10,10 +11,10 @@ public class Ghost_StatePosses : IState
     private GameObject possesed;
     private Transform goalTransform;
     private Rigidbody2D goalRb;
+    private GameObject goalPath;
 
     private Vector2 direction;
     private Vector3 goalPos;
-    private bool spotOn;
 
 
     public Ghost_StatePosses(GhostController owner, GameObject possesed) {
@@ -21,6 +22,12 @@ public class Ghost_StatePosses : IState
         this.owner = owner;
         this.goalTransform = possesed.GetComponent<Transform>();
         this.goalRb = possesed.GetComponent<Rigidbody2D>();
+        var b = possesed.GetComponent<MoveableOnPath>();
+        if (b != null)
+        {
+            this.goalPath = b.Path;
+        }
+        
     }
 
     public void stateInit()
@@ -28,8 +35,11 @@ public class Ghost_StatePosses : IState
         this.owner.movement = new Vector2(0, 0);
         this.owner.hitbox.enabled = false;
         this.goalPos = goalTransform.position;
-        this.goalRb.bodyType = RigidbodyType2D.Dynamic;
-        this.spotOn = false;
+
+        if (this.goalRb != null)
+        {
+            this.goalRb.bodyType = RigidbodyType2D.Dynamic;
+        }
 
     }
     public void stateUpdate()
@@ -57,13 +67,29 @@ public class Ghost_StatePosses : IState
 
     public void stateFixedUpdtate()
     {
-        this.goalRb.MovePosition(this.goalRb.position + this.direction * .5f * Time.fixedDeltaTime);
+        if (this.goalRb != null)
+        {
+            this.goalRb.MovePosition(this.goalRb.position + this.direction * .5f * Time.fixedDeltaTime);
+        }
+        var p = this.possesed.GetComponent<PathFollower>();
+        if (p != null)
+        {
+            p.speed = Input.GetAxisRaw("Horizontal");
+        }
     }
 
     public void stateExit()
     {
         this.owner.hitbox.enabled = true;
-        this.goalRb.bodyType = RigidbodyType2D.Kinematic;
+        if (this.goalRb != null)
+        {
+            this.goalRb.bodyType = RigidbodyType2D.Kinematic;
+        }
+        var p = this.possesed.GetComponent<PathFollower>();
+        if (p != null)
+        {
+            p.speed = 0;
+        }
     }
 
     public void stateOnTriggerEnter(Collider2D collision)
