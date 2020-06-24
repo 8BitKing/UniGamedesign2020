@@ -34,8 +34,10 @@ public class KindStateIdle : IState
     public void stateInit()
     {
         this.animator.Play("Idle", -1, 0);
-        
-        
+        this.owner.rb.bodyType= RigidbodyType2D.Kinematic;
+
+
+
     }
 
     public void stateOnTriggerEnter(Collider2D collision)

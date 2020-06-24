@@ -82,7 +82,8 @@ public class GridDebug : MonoBehaviour
         grid.Decay(2);
 
         PlaceLights();
-
+        GameObject kind = GameObject.FindGameObjectWithTag("possesable");
+        print(grid.GetValue(kind.transform.position));
 
     }
 
@@ -167,13 +168,15 @@ public class GridDebug : MonoBehaviour
             UnityEngine.Experimental.Rendering.Universal.Light2D light =lights[i].GetComponent<UnityEngine.Experimental.Rendering.Universal.Light2D>();
             if (light != null)
             {
-
+                LightRank rank= light.GetComponent<LightRank>();
 
                 Vector3 centerLight = light.transform.position;
                 int brightness = (int)(light.intensity * 50);
+                int lightprio = rank.lightrank;
+                if (brightness == 0) lightprio = 0;
                 int radius = (int)(light.pointLightOuterRadius / 0.32f);
 
-                grid.GenLight(centerLight, radius, brightness);
+                grid.GenLight(centerLight, radius, brightness,lightprio);
 
             }
 

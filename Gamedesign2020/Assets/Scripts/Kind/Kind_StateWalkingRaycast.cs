@@ -40,7 +40,8 @@ public class Kind_StateWalkingRaycast : IState
     public void stateInit()
     {
         this.animator.Play("Walk Animations", -1, 0);
-       
+        this.owner.rb.bodyType = RigidbodyType2D.Dynamic;
+
     }
 
 
