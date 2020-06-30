@@ -83,7 +83,7 @@ public class GridDebug : MonoBehaviour
 
         PlaceLights();
         GameObject kind = GameObject.FindGameObjectWithTag("possesable");
-        print(grid.GetValue(kind.transform.position));
+        
 
     }
 

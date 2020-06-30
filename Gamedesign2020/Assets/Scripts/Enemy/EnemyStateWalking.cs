@@ -112,9 +112,10 @@ public class EnemyStateWalking : IState
         //am ende des letzten pfades wechsel in idle state
         else
         {
-            
-            //--------idle state implementieren---------
-           
+
+            owner.stateMachine.ChangeState(new EnemyStateIdle(this.owner));
+
+
         }
 
 
