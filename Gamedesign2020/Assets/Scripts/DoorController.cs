@@ -32,14 +32,13 @@ public class DoorController : MonoBehaviour
 
         if (powerTrigger.active)
         {
-            print(this.stateMachine.getCurrentState());
-            if (this.stateMachine.getCurrentStateComponent() is Door_StateOpen)
+            if (this.stateMachine.getCurrentStateComponent() is Door_StateOpen || this.stateMachine.getCurrentStateComponent() is Door_StateOpening)
             {
-                this.stateMachine.ChangeState(new Door_StateClosed(this));
+                this.stateMachine.ChangeState(new Door_StateCloseing(this));
             }
             else
             {
-                this.stateMachine.ChangeState(new Door_StateOpen(this));
+                this.stateMachine.ChangeState(new Door_StateOpening(this));
             }
 
             powerTrigger.active = false;

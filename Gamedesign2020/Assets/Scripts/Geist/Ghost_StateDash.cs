@@ -81,7 +81,6 @@ public class Ghost_StateDash : IState
         if (collision.gameObject.tag == "SOLIDWALL")
         {
             this.inWall = false;
-            MonoBehaviour.print("false");
         }
     }
 

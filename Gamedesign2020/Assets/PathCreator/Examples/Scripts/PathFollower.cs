@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.IO;
+using UnityEngine;
 
 namespace PathCreation.Examples
 {
@@ -30,7 +31,13 @@ namespace PathCreation.Examples
                 }
             }
         }
-
+        public float GetDistanceTravelled() {
+            return distanceTravelled;
+        }
+        public void SetDistanceTravelled(float a)
+        {
+            distanceTravelled = a;
+        }
         // If the path changes during the game, update the distance travelled so that the follower's position on the new path
         // is as close as possible to its position on the old path
         void OnPathChanged() {

@@ -1,6 +1,8 @@
 ﻿using PathCreation.Examples;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEditorInternal;
 using UnityEngine;
 
@@ -71,10 +73,43 @@ public class Ghost_StatePosses : IState
         {
             this.goalRb.MovePosition(this.goalRb.position + this.direction * .5f * Time.fixedDeltaTime);
         }
+
+
+
         var p = this.possesed.GetComponent<PathFollower>();
         if (p != null)
         {
-            p.speed = Input.GetAxisRaw("Horizontal");
+            Vector3 input = new Vector3(-Input.GetAxisRaw("Horizontal"), -Input.GetAxisRaw("Vertical"), 0);
+            Vector3 dir = Quaternion.Euler(0, 0, -90) * p.pathCreator.path.GetNormalAtDistance(p.GetDistanceTravelled());
+           
+            Vector3 zAxis = new Vector3(0, 0, 1);
+            Vector3 yAxis = new Vector3(0, 1, 0);
+            Vector3 xAxis = new Vector3(1, 0, 0);
+            float _a = Vector3.SignedAngle(yAxis, dir, zAxis);
+            input = Quaternion.Euler(0, 0, -_a) * input;
+            dir = Quaternion.Euler(0, 0, -_a) * dir;
+
+            
+            float spd = Vector3.Angle(input, xAxis) / Vector3.Angle(dir, xAxis);
+            if (Math.Sign(input.y) != Math.Sign(dir.y))
+            {
+                spd *= -1;
+            }
+
+            //MonoBehaviour.print(input);
+            MonoBehaviour.print(input);
+
+            if (p.GetDistanceTravelled() + (spd * Time.deltaTime) <= p.pathCreator.path.length && p.GetDistanceTravelled() + (spd * Time.deltaTime) >= 0)
+            {
+                p.speed = spd;
+            }
+            else if (p.GetDistanceTravelled() > .1f){
+                p.SetDistanceTravelled(p.pathCreator.path.length);
+            }
+            else
+            {
+                p.SetDistanceTravelled(0);
+            }
         }
     }
 
