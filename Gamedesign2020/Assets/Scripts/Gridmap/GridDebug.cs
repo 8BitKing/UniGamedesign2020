@@ -49,14 +49,14 @@ public class GridDebug : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            grid.GetPathingGoal(UtilsClass.GetMouseWorldPosition(), 5);
-        }
-        if (Input.GetMouseButtonDown(1))
-        {
-            grid.SetValue(UtilsClass.GetMouseWorldPosition(),1);
-        }
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    grid.GetPathingGoal(UtilsClass.GetMouseWorldPosition(), 5);
+        //}
+        //if (Input.GetMouseButtonDown(1))
+        //{
+        //    grid.SetValue(UtilsClass.GetMouseWorldPosition(),1);
+        //}
         //if (Input.GetKeyDown("space"))
         //{
         //    grid.MoveObstacleFrom(UtilsClass.GetMouseWorldPosition());
@@ -182,8 +182,13 @@ public class GridDebug : MonoBehaviour
 
         }
     }
-    public Vector3 GetGoal(Vector3 pos,int range)
+    public Vector3 GetGoal(Vector3 pos,int range,GameObject kind)
     {
-        return grid.GetPathingGoal(pos, range);
+        return grid.GetPathingGoal(pos, range, kind);
+    }
+
+    public Vector2 getFollowTarget(int visionRange, Vector3 kindPos, Vector3 enemyPos,GameObject enemy)
+    {
+        return grid.getFollowTarget(visionRange, kindPos, enemyPos,enemy);
     }
 }

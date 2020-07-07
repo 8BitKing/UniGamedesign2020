@@ -113,7 +113,7 @@ public class Kind_StateWalkingRaycast : IState
         animator.SetFloat("speed", direction.magnitude);
 
         owner.movement = this.movement;
-        goal = gridObject.GetGoal(centerBoundingBox, this.visionRange) ;
+        goal = gridObject.GetGoal(centerBoundingBox, this.visionRange,owner.gameObject) ;
     }
 
 
