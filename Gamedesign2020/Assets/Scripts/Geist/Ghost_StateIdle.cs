@@ -9,9 +9,7 @@ public class Ghost_StateIdle : IState
     private Animator animator;
     private Vector2 movement;
     private Vector2 direction;
-    private bool inWall;
-
-
+   
 
     public Ghost_StateIdle(GhostController owner){
         this.owner = owner;

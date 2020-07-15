@@ -128,7 +128,7 @@ public class GridTest
     }
 
     //Methode um an Position (x,y) in Grid Koords Lichtwerte im radius "radius" und in max-höhe vom Wert "brightness" im zentrum zu setzen
-   public void GenLight(int x, int y,int radius,int brightness,int prio, float influence)
+   public void GenLight(int x, int y,int radius,int brightness,int prio)
     {
         float lightFactor;
         if (x >= 0 && y >= 0 && x < width && y < height)
@@ -141,13 +141,11 @@ public class GridTest
                     Vector2 curr = new Vector2(i, j);
                     Vector2 dist = curr - center;
                     lightFactor = (brightness *(1/(dist.magnitude+1)));
-
-                    int value = Mathf.FloorToInt((lightFactor + (prio * 100)) * influence);
                     if (dist.magnitude <= radius)
                     {
-                        if (GetValue(i,j) < value && GetValue(i,j)>0)
+                        if (GetValue(i,j) < Mathf.FloorToInt(lightFactor + (prio * 100)) &&GetValue(i,j)>0)
                         {
-                            SetValue(i, j, value);
+                            SetValue(i, j, Mathf.FloorToInt(lightFactor)+(prio*100));
                         }
                     }
 
@@ -157,11 +155,11 @@ public class GridTest
     }
 
     //umrechnung von welt in grid koord zur platzierung der lichtwerte
-    public void GenLight(Vector3 worldPos, int radius, int brightness,int prio, float influence)
+    public void GenLight(Vector3 worldPos, int radius, int brightness,int prio)
     {
         int x, y;
         GetGridCoord(worldPos, out x, out y);
-        GenLight(x, y, radius, brightness,prio, influence);
+        GenLight(x, y, radius, brightness,prio);
     }
     public void Decay(float rate)
     {
