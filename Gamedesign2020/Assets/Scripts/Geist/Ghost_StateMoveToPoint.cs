@@ -41,11 +41,18 @@ public class Ghost_StateMoveToPoint : IState
 
     public void stateOnTriggerEnter(Collider2D collision)
     {
+        if (collision.gameObject.tag == "SOLIDWALL")
+        {
+            this.inWall = true;
+        }
     }
 
     public void stateOnTriggerExit(Collider2D collision)
     {
-        this.inWall = false;
+        if (collision.gameObject.tag == "SOLIDWALL")
+        {
+            this.inWall = false;
+        }
     }
 
 

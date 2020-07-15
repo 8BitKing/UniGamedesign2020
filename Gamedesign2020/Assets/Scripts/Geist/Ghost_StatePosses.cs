@@ -14,12 +14,16 @@ public class Ghost_StatePosses : IState
     private Transform goalTransform;
     private Rigidbody2D goalRb;
     private GameObject goalPath;
+    private Vector2 oldPos;
+    private bool inWall;
 
     private Vector2 direction;
     private Vector3 goalPos;
 
 
-    public Ghost_StatePosses(GhostController owner, GameObject possesed) {
+    public Ghost_StatePosses(GhostController owner, GameObject possesed, Vector2  oldPos, bool inWall) {
+        this.inWall = inWall;
+        this.oldPos = oldPos;
         this.possesed = possesed;
         this.owner = owner;
         this.goalTransform = possesed.GetComponent<Transform>();
@@ -59,12 +63,24 @@ public class Ghost_StatePosses : IState
 
         owner.movement = vec2;
 
-        this.goalPos = this.goalTransform.position;
 
-        if (Input.GetButtonDown("Dash")) 
+        this.goalPos = this.goalTransform.position;
+        //To Idle State
+
+        if (Input.GetButtonDown("Dash"))
         {
-            owner.BreakoutIdle();
+            MonoBehaviour.print(inWall);
+            if (this.inWall == false)
+            {
+                owner.BreakoutIdle();
+            }
+            else
+            {
+                owner.stateMachine.ChangeState(new Ghost_StateMoveToPoint(owner, oldPos));
+            }
+
         }
+
     }
 
     public void stateFixedUpdtate()
@@ -97,7 +113,6 @@ public class Ghost_StatePosses : IState
             }
 
             //MonoBehaviour.print(input);
-            MonoBehaviour.print(input);
 
             if (p.GetDistanceTravelled() + (spd * Time.deltaTime) <= p.pathCreator.path.length && p.GetDistanceTravelled() + (spd * Time.deltaTime) >= 0)
             {
@@ -129,9 +144,17 @@ public class Ghost_StatePosses : IState
 
     public void stateOnTriggerEnter(Collider2D collision)
     {
+        if (collision.gameObject.tag == "SOLIDWALL")
+        {
+            this.inWall = true;
+        }
     }
 
     public void stateOnTriggerExit(Collider2D collision)
     {
+        if (collision.gameObject.tag == "SOLIDWALL")
+        {
+            this.inWall = false;
+        }
     }
 }
