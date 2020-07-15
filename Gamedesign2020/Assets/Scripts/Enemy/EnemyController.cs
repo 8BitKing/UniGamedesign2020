@@ -7,6 +7,10 @@ using System;
 
 public class EnemyController : MonoBehaviour
 {
+    public KindControllerRaycast target;
+    public Vector2 movement;
+
+    public bool isOnPath = false;
     public StateMachine stateMachine = new StateMachine();
     public float speed = .5f;
 
@@ -22,15 +26,16 @@ public class EnemyController : MonoBehaviour
     
     [NonSerialized]
     public Vector3 goal;
-
+    
 
 
 
     void Start()
     {
-
+        movement = new Vector2(0, 0);
         this.animator = Sprite.GetComponent<Animator>();
         this.stateMachine.ChangeState(new EnemyStateWalking(this));
+        //this.stateMachine.ChangeState(new EnemyStateFollow(this));
     }
 
     // Update is called once per frame
@@ -43,8 +48,11 @@ public class EnemyController : MonoBehaviour
     private void FixedUpdate()
     {
         this.stateMachine.runStateFixedUpdate();
+        if (!isOnPath)
+        {
+            this.rb.MovePosition(this.rb.position + this.movement * speed * Time.fixedDeltaTime);
+        }
 
-        
-        
+
     }
 }

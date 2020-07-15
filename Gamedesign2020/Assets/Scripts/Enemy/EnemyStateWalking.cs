@@ -6,9 +6,12 @@ using UnityEngine;
 using PathCreation;
 using System;
 using System.IO;
+using System.IO.IsolatedStorage;
 
 public class EnemyStateWalking : IState
 {
+    private KindControllerRaycast target;
+
     //initialisieren der Path variablen
     private PathCreator[] pathCreator;
     public EndOfPathInstruction end;
@@ -21,13 +24,13 @@ public class EnemyStateWalking : IState
     private EnemyController owner;
     private Animator animator;
     private Rigidbody2D rigidbody;
-    
-    
+
+    private Vector2 movement;
     
     private Vector3 goal;
     private Vector2 direction;
     private Vector2 goal2D;
-    private Transform transform;
+    
     private GridDebug gridObject;
     private int visionRange;
     public int currpath=0;
@@ -41,17 +44,21 @@ public class EnemyStateWalking : IState
         this.animator = owner.animator;
         this.rigidbody = owner.rb;
         this.speed = owner.speed;
+        this.movement = owner.movement;
         
-        this.transform = owner.transform;
         this.gridObject = owner.gridObject;
         this.visionRange = owner.visionRange;
         this.patrol = owner.patrol;
+
+        this.target = owner.target;
 
     }
     public void stateInit()
     {
         this.animator.Play("WalkAnimations", -1, 0);
         this.owner.rb.bodyType = RigidbodyType2D.Dynamic;
+        owner.isOnPath = true;
+        owner.speed = 1.5f;
         //----------------------------------------------------------------------------------------------WICHTIG
         //initialisieren der Pfade für den editor, sonst spackt alles
         for(int i = 0; i < pathCreator.Length; i++)
@@ -64,12 +71,20 @@ public class EnemyStateWalking : IState
 
     public void stateExit()
     {
-
+        owner.isOnPath = false;
+        owner.speed = 0.5f;
     }
 
 
     public void stateUpdate()
     {
+        
+        
+        //wenn kind in visionRange switch zu follow
+        if ((target.gameObject.transform.position-owner.gameObject.transform.position).magnitude<visionRange*0.32f)
+        {
+            owner.stateMachine.ChangeState(new EnemyStateFollow(owner));
+        }
         //patrol ist bool ob es ein patroullie weg ist oder nicht wenn ja dann:
         if (patrol[currpath])
         {
@@ -103,7 +118,9 @@ public class EnemyStateWalking : IState
         if (endOfPath == false)
         {
             dstTravelled += speed * Time.deltaTime * sign;
-            owner.rb.MovePosition(owner.rb.position+((Vector2)pathCreator[currpath].path.GetPointAtDistance(dstTravelled, end)-owner.rb.position));
+            movement=((Vector2)pathCreator[currpath].path.GetPointAtDistance(dstTravelled, end)-owner.rb.position);
+
+            owner.rb.MovePosition(owner.rb.position + movement);
 
             direction = Quaternion.Euler(0, 0, -90) * pathCreator[currpath].path.GetNormalAtDistance(dstTravelled);
             animator.SetFloat("hdir", direction.x);
@@ -117,10 +134,10 @@ public class EnemyStateWalking : IState
 
 
         }
+        
 
 
-        
-        
+
     }
 
 

@@ -57,7 +57,7 @@ public class KindStateCry : IState
         movement = new Vector2(0, 0);
 
         Vector3 centerBoundingBox = owner.gameObject.GetComponent<BoxCollider2D>().bounds.center;
-        goal = gridObject.GetGoal(centerBoundingBox, this.visionRange);
+        goal = gridObject.GetGoal(centerBoundingBox, this.visionRange,owner.gameObject);
 
 
         direction = new Vector2(goal.x, goal.y) - new Vector2(centerBoundingBox.x, centerBoundingBox.y);

@@ -227,17 +227,17 @@ public class GridTest
         }
     }
 
-    public Vector3 GetPathingGoal(Vector3 currPos,int visionRange)
+    public Vector3 GetPathingGoal(Vector3 currPos,int visionRange,GameObject kind)
     {
         int x, y;
         GetGridCoord(currPos, out x, out y);
         if (x >= 0 && y >= 0 && x < width && y < height)
         {
-            return GetPathingGoal(x, y, visionRange,currPos);
+            return GetPathingGoal(x, y, visionRange,currPos,kind);
         }
         else return new Vector3(currPos.x,currPos.y,GetValue(currPos));
     }
-    public Vector3 GetPathingGoal(int x, int y, int visionRange, Vector3 centerWorld)
+    public Vector3 GetPathingGoal(int x, int y, int visionRange, Vector3 centerWorld,GameObject kind)
     {
 
         Vector3 center = centerWorld;
@@ -257,11 +257,12 @@ public class GridTest
                 Vector2 distGrid = currGrid - centerGrid;
                 if ((distGrid.magnitude <= visionRange&& GetValue(i, j)>maxLight.z)||(distGrid.magnitude <= visionRange && GetValue(i, j)==maxLight.z&&maxLight.z>1&&distGrid.magnitude>(new Vector2(maxLight.x,maxLight.y)-centerGrid).magnitude))
                 {
-                    
+                    kind.GetComponent<BoxCollider2D>().enabled = !kind.GetComponent<BoxCollider2D>().enabled;
                     RaycastHit2D hit=Physics2D.Raycast(new Vector2(center.x,center.y), new Vector2 (dist.x,dist.y));
+                    kind.GetComponent<BoxCollider2D>().enabled = !kind.GetComponent<BoxCollider2D>().enabled;
 
 
-                   // Debug.Log(hit.distance+"vs"+dist.magnitude);
+                    // Debug.Log(hit.distance+"vs"+dist.magnitude);
 
                     if (hit.distance > dist.magnitude||hit.distance==0)
                     {
@@ -285,6 +286,53 @@ public class GridTest
       
         return dest;
     }
+    public Vector2 getFollowTarget(int visionRange, Vector3 kindPos, Vector3 enemyPos,GameObject enemy)
+    {
+        int x, y,i,j;
+        GetGridCoord(enemyPos, out i, out j);
+        GetGridCoord(kindPos, out x, out y);
+        if (x >= 0 && y >= 0 && x < width && y < height)
+        {
+            return getFollowTarget(visionRange, x, y, i, j, enemy);
+        }
+        else {
+            
+            return enemyPos;
+        }
+    }
+    public Vector2 getFollowTarget(int visionRange, int kindX, int kindY, int enemyX, int enemyY, GameObject enemy)
+    {
+        Vector2 kindGridCoord=new Vector2(kindX,kindY);
+        Vector2 enemyGridCoord=new Vector2(enemyX,enemyY);
+        if ((kindGridCoord - enemyGridCoord).magnitude < visionRange)
+        {
+            enemy.GetComponent<BoxCollider2D>().enabled = !enemy.GetComponent<BoxCollider2D>().enabled;
+            RaycastHit2D hit = Physics2D.Raycast(enemyGridCoord, (kindGridCoord - enemyGridCoord));
+            enemy.GetComponent<BoxCollider2D>().enabled = !enemy.GetComponent<BoxCollider2D>().enabled;
+            if (hit.distance > (kindGridCoord - enemyGridCoord).magnitude || hit.distance == 0)
+            {
+                Vector2 dest = GetWorldPos(kindX, kindY);
+                dest.x += 0.5f * cellSize;
+                dest.y += 0.5f * cellSize;
+                return dest;
+            }
+            else
+            {
+
+                return GetWorldPos(enemyX, enemyY);
+            }
+        }
+        else {
+
+            
+            return GetWorldPos(enemyX, enemyY); 
+        
+        
+        }
+
+
+    }
+
 
     public float GetCellSize()
     {

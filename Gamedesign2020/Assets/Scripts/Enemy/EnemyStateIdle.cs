@@ -14,7 +14,8 @@ public class EnemyStateIdle : IState
     private float hdir=0;
     private float vdir=-1;
     private int direction = 0;
-    
+    private KindControllerRaycast target;
+
     public EnemyStateIdle(EnemyController owner)
     {
 
@@ -27,11 +28,13 @@ public class EnemyStateIdle : IState
         
         this.gridObject = owner.gridObject;
         this.visionRange = owner.visionRange;
-        
 
+        this.target = owner.target;
     }
     public void stateInit()
     {
+        MonoBehaviour.print("reachedIdle");
+        owner.movement = new Vector2(0, 0);
         this.animator.Play("Idle", -1, 0);
         this.animator.SetFloat("hdir", hdir);
         this.animator.SetFloat("vdir", vdir);
@@ -46,6 +49,11 @@ public class EnemyStateIdle : IState
 
     public void stateUpdate()
     {
+        owner.movement = new Vector2(0, 0);
+        if((target.gameObject.transform.position - owner.gameObject.transform.position).magnitude < visionRange * 0.32f&& (target.gameObject.transform.position - owner.gameObject.transform.position).magnitude>0.32f)
+        {
+            owner.stateMachine.ChangeState(new EnemyStateFollow(owner));
+        }
         if (Time.time-time > 3)
         {
             time = Time.time;
