@@ -71,7 +71,7 @@ public class Ghost_StateDash : IState
         }
         if (collision.gameObject.tag == "MOVEABLE")
         {
-            owner.stateMachine.ChangeState(new Ghost_StatePosses(owner, collision.gameObject, oldPos, inWall));
+            owner.stateMachine.ChangeState(new Ghost_StatePosses(owner, collision.gameObject));
         }
     }
 
