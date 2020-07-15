@@ -4,13 +4,23 @@ using UnityEngine;
 using PathCreation;
 
 using System;
+using System.Linq;
 
 public class EnemyController : MonoBehaviour
 {
     public KindControllerRaycast target;
     public Vector2 movement;
 
+    [NonSerialized]
+    public bool findBack = false;
+    [NonSerialized]
     public bool isOnPath = false;
+    [NonSerialized]
+    public int oldPath;
+    [NonSerialized]
+    public float oldPathPosition;
+    [NonSerialized]
+    public Stack<Vector2> traceback=new Stack<Vector2>();
     public StateMachine stateMachine = new StateMachine();
     public float speed = .5f;
 
@@ -22,7 +32,7 @@ public class EnemyController : MonoBehaviour
 
     public Rigidbody2D rb;
     public Animator animator;
-    // [NonSerialized]
+    
     
     [NonSerialized]
     public Vector3 goal;
@@ -36,6 +46,7 @@ public class EnemyController : MonoBehaviour
         this.animator = Sprite.GetComponent<Animator>();
         this.stateMachine.ChangeState(new EnemyStateWalking(this));
         //this.stateMachine.ChangeState(new EnemyStateFollow(this));
+        
     }
 
     // Update is called once per frame
@@ -43,6 +54,8 @@ public class EnemyController : MonoBehaviour
     {
         //print(this.stateMachine.getCurrentState());
         this.stateMachine.runStateUpdate();
+
+        
 
     }
     private void FixedUpdate()

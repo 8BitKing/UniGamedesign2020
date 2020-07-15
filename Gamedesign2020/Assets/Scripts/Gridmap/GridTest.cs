@@ -295,7 +295,7 @@ public class GridTest
         }
         else {
             
-            return enemyPos;
+            return new Vector2(-999,-999);
         }
     }
     public Vector2 getFollowTarget(int visionRange, int kindX, int kindY, int enemyX, int enemyY, GameObject enemy)
@@ -317,15 +317,15 @@ public class GridTest
             else
             {
 
-                return GetWorldPos(enemyX, enemyY);
+                return new Vector2(-999, -999);
             }
         }
         else {
 
-            
-            return GetWorldPos(enemyX, enemyY); 
-        
-        
+
+            return new Vector2(-999, -999);
+
+
         }
 
 

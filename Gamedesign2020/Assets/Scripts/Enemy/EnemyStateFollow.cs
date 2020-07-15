@@ -18,6 +18,7 @@ public class EnemyStateFollow : IState
     private Vector2 lastGoal;
     private bool lastGoalActive = false;
     private bool lastGoalInUse = false;
+    private bool findBack;
 
     public EnemyStateFollow(EnemyController owner)
     {
@@ -29,13 +30,15 @@ public class EnemyStateFollow : IState
         this.visionRange = owner.visionRange;
         this.target = owner.target;
         this.movement = owner.movement;
+        this.findBack = owner.findBack;
     }
     public void stateInit()
     {
-        MonoBehaviour.print("reached");
+        
         this.animator.Play("WalkAnimations", -1, 0);
         this.owner.rb.bodyType = RigidbodyType2D.Dynamic;
         
+
     }
     public void stateExit()
     {
@@ -44,23 +47,26 @@ public class EnemyStateFollow : IState
 
     public void stateUpdate()
     {
+        //MonoBehaviour.print(lastGoalInUse);
         if (!lastGoalInUse)
         {
             goal2D = gridObject.getFollowTarget(visionRange, target.gameObject.transform.position, owner.gameObject.transform.position, owner.gameObject);
         }
-        
-        if ((goal2D - (Vector2)owner.gameObject.transform.position).magnitude > 0.5f)
+        if ((goal2D - (Vector2)owner.gameObject.transform.position).magnitude < 0.32f&&lastGoalInUse==false) owner.stateMachine.ChangeState(new EnemyStateIdle(owner));
+        if (goal2D !=new Vector2(-999,-999))
         {
            
             lastGoalActive = true;
             lastGoal = goal2D;
         }
-        if ((goal2D- (Vector2)owner.gameObject.transform.position).magnitude <= 0.3f && lastGoalActive == false)
+        if (goal2D==new Vector2(-999,-999)&&lastGoalActive==false)
         {
-          
-            owner.stateMachine.ChangeState(new EnemyStateIdle(owner));
+            
+            if (owner.findBack)owner.stateMachine.ChangeState(new EnemyStateFindBack(owner));
+            else owner.stateMachine.ChangeState(new EnemyStateIdle(owner));
+
         }
-        if ((goal2D - (Vector2)owner.gameObject.transform.position).magnitude <= 0.3f && lastGoalActive == true)
+        if (((goal2D==new Vector2(-999,-999)) && lastGoalActive == true)||lastGoalInUse)
         {
             
             if ((lastGoal - (Vector2)owner.gameObject.transform.position).magnitude > 0.07f)
@@ -69,15 +75,13 @@ public class EnemyStateFollow : IState
                 
                 goal2D = lastGoal;
                 lastGoalInUse = true;
-                MonoBehaviour.print((goal2D - (Vector2)owner.gameObject.transform.position));
+                
+                
             }
             else
             {
-                if (lastGoalInUse == true)
-                {
-                    lastGoalInUse = false;
-                    
-                }else owner.stateMachine.ChangeState(new EnemyStateIdle(owner));
+                lastGoalActive = false;
+                lastGoalInUse = false;
             }
         }
 

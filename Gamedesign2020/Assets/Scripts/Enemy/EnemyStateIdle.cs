@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class EnemyStateIdle : IState
@@ -15,31 +16,30 @@ public class EnemyStateIdle : IState
     private float vdir=-1;
     private int direction = 0;
     private KindControllerRaycast target;
+    private bool findBack;
 
     public EnemyStateIdle(EnemyController owner)
     {
 
-        this.owner = owner;
-        
+        this.owner = owner;       
         this.animator = owner.animator;
-        this.rb = owner.rb;
-        
-
-        
+        this.rb = owner.rb;       
         this.gridObject = owner.gridObject;
         this.visionRange = owner.visionRange;
-
         this.target = owner.target;
+        this.findBack = owner.findBack;
     }
     public void stateInit()
     {
-        MonoBehaviour.print("reachedIdle");
+       
         owner.movement = new Vector2(0, 0);
         this.animator.Play("Idle", -1, 0);
         this.animator.SetFloat("hdir", hdir);
         this.animator.SetFloat("vdir", vdir);
         this.owner.rb.bodyType = RigidbodyType2D.Kinematic;
         time = Time.time;
+        
+        
     }
     
     public void stateExit()

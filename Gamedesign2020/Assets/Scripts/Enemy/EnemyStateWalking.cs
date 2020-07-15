@@ -7,6 +7,7 @@ using PathCreation;
 using System;
 using System.IO;
 using System.IO.IsolatedStorage;
+using System.Linq;
 
 public class EnemyStateWalking : IState
 {
@@ -20,6 +21,7 @@ public class EnemyStateWalking : IState
     private int sign = 1;
     private bool[] patrol;
     private bool endOfPath = false;
+    private bool findBack;
 
     private EnemyController owner;
     private Animator animator;
@@ -38,19 +40,17 @@ public class EnemyStateWalking : IState
 
     public EnemyStateWalking(EnemyController owner)
     {
-
         this.owner = owner;
         this.pathCreator = owner.pathCreator;
         this.animator = owner.animator;
         this.rigidbody = owner.rb;
         this.speed = owner.speed;
-        this.movement = owner.movement;
-        
+        this.movement = owner.movement;        
         this.gridObject = owner.gridObject;
         this.visionRange = owner.visionRange;
         this.patrol = owner.patrol;
-
         this.target = owner.target;
+        this.findBack = owner.findBack;
 
     }
     public void stateInit()
@@ -59,11 +59,21 @@ public class EnemyStateWalking : IState
         this.owner.rb.bodyType = RigidbodyType2D.Dynamic;
         owner.isOnPath = true;
         owner.speed = 1.5f;
+        speed = 1.5f;
         //----------------------------------------------------------------------------------------------WICHTIG
         //initialisieren der Pfade für den editor, sonst spackt alles
         for(int i = 0; i < pathCreator.Length; i++)
         {
             pathCreator[i].InitializeEditorData(true);
+            pathCreator[i].bezierPath.FlipNormals = true;
+        }
+
+        if (findBack)
+        {
+            currpath = owner.oldPath;
+            dstTravelled = owner.oldPathPosition;
+            findBack = false;
+            
         }
         
     }
@@ -73,6 +83,17 @@ public class EnemyStateWalking : IState
     {
         owner.isOnPath = false;
         owner.speed = 0.5f;
+        if (endOfPath) this.findBack = false;
+        else
+        {
+            this.findBack = true;
+            owner.oldPath = currpath;
+            owner.oldPathPosition = dstTravelled;
+            owner.traceback.Clear();
+            owner.traceback.Push((Vector2)owner.gameObject.transform.position);
+            
+        }
+        owner.findBack = this.findBack;
     }
 
 
