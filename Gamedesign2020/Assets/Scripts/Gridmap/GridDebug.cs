@@ -176,7 +176,7 @@ public class GridDebug : MonoBehaviour
                 if (brightness == 0) lightprio = 0;
                 int radius = (int)(light.pointLightOuterRadius / 0.32f);
 
-                grid.GenLight(centerLight, radius, brightness,lightprio);
+                grid.GenLight(centerLight, radius, brightness,lightprio, rank.influence);
 
             }
 

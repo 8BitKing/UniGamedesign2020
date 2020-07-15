@@ -14,6 +14,9 @@ public class GhostController : MonoBehaviour
     public float acceleration = 1f;
     public float dashSpeed = 4f;
     public float dashTime = 0.15f;
+    public float influenceRange = 3*.32f;
+    [NonSerialized]
+    public GameObject[] lights;
     [NonSerialized]
     public float lastDash = -1;
     [NonSerialized]
@@ -55,15 +58,32 @@ public class GhostController : MonoBehaviour
     void FixedUpdate()
     {
         this.stateMachine.runStateFixedUpdate();
+        //influence Lights
+
+        if (lights == null)
+        {
+            lights = GameObject.FindGameObjectsWithTag("LIGHTSOURCE");
+        }
+
+        foreach (GameObject light in lights)
+        {
+            var rank = light.GetComponent<LightRank>();
+            var dist = Vector2.Distance(transform.position, light.transform.position);
+            if (dist < influenceRange)
+            {
+                rank.influence = Mathf.Clamp(influenceRange/dist, 1, 2);
+            } else {
+                rank.influence = 1;
+            }
+        }
 
         //Move Ghost
         this.rb.MovePosition(this.rb.position + this.movement  * Time.fixedDeltaTime);
     }
 
+
+
     //--Breakout Functions
-
-
-
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -89,7 +109,7 @@ public class GhostController : MonoBehaviour
 
     public bool BreakoutDash()
     {
-        if (good_form && Time.time- this.lastDash >= this.dashCooldown)
+        if (good_form && Time.time - this.lastDash >= this.dashCooldown)
         {
             if (Input.GetButtonDown("Dash"))
             {
