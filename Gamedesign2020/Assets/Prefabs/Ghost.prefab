@@ -199,6 +199,7 @@ MonoBehaviour:
   acceleration: 1
   dashSpeed: 4
   dashTime: 0.15
+  influenceRange: 0.64
   dashCooldown: 0.5
   switchCooldown: 0.5
   Sprite: {fileID: 6141186158731060254}
